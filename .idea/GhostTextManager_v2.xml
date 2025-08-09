@@ -15,6 +15,18 @@
             </GhostTextMetaData>
           </value>
         </entry>
+        <entry key="const KanbanBoard = () =&gt; {&#10;  return &lt;div&gt;&#10;    &#10;  &lt;/div&gt;;&#10;};&#10;&#10;export default KanbanBoard;&#10;напиши тут канбан доску с драгон дропо где можно будет перетаскивать таски и добавлять еще колонки">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754687140487" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
         <entry key="как сделать иконку белой ?">
           <value>
             <GhostTextMetaData>
@@ -27,6 +39,54 @@
             </GhostTextMetaData>
           </value>
         </entry>
+        <entry key="модалка же поверх должна вызываться">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754719945367" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="можно ли упростить этот код оптимизировать его ?">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754717917699" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="надо вызывать модальное окно что бы спрашивать кдаление или создание сейчас используется promt и confirm а надо создать модальное окно переиспользуемое в отдельном файле и вызывать его">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754718811859" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="не я хотел что бы модалка была поверх и фон такой еле затемненый слегка и там видно все что было на странице">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754720017742" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
         <entry key="почему не работате tailwind">
           <value>
             <GhostTextMetaData>
@@ -34,6 +94,18 @@
               <option name="timestamps">
                 <list>
                   <option value="1754682522498" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="у меня сейчас отображается так что выходит модалка и позади полностью черный фон а я хотел что бы он просвечивал и я видел что на заднем фоне">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754720148160" />
                 </list>
               </option>
             </GhostTextMetaData>
