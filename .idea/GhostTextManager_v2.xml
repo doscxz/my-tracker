@@ -3,6 +3,18 @@
   <component name="GhostTextManager">
     <option name="inputs">
       <map>
+        <entry key="Each child in a list should have a unique &quot;key&quot; prop.&#10; посмотри где нет и добавь">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754823570196" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
         <entry key="Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object.&#10;&#10;Check the render method of `SideBar`.&#10;&#10;Call Stack&#10;19">
           <value>
             <GhostTextMetaData>
@@ -15,6 +27,18 @@
             </GhostTextMetaData>
           </value>
         </entry>
+        <entry key="Encountered two children with the same key, `1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754737358687" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
         <entry key="const KanbanBoard = () =&gt; {&#10;  return &lt;div&gt;&#10;    &#10;  &lt;/div&gt;;&#10;};&#10;&#10;export default KanbanBoard;&#10;напиши тут канбан доску с драгон дропо где можно будет перетаскивать таски и добавлять еще колонки">
           <value>
             <GhostTextMetaData>
@@ -22,6 +46,30 @@
               <option name="timestamps">
                 <list>
                   <option value="1754687140487" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="без useState можно ?">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754737996419" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="добавь что бы там можно была вставлять код выделть текст красить его в 3 цвета на твой выбор">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754822852750" />
                 </list>
               </option>
             </GhostTextMetaData>
@@ -75,6 +123,42 @@
             </GhostTextMetaData>
           </value>
         </entry>
+        <entry key="напиши красивый чат где закаменчено">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754822588522" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="напиши простенькую функцию удаления">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754737966410" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="не работает">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754738056658" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
         <entry key="не я хотел что бы модалка была поверх и фон такой еле затемненый слегка и там видно все что было на странице">
           <value>
             <GhostTextMetaData>
@@ -82,6 +166,18 @@
               <option name="timestamps">
                 <list>
                   <option value="1754720017742" />
+                </list>
+              </option>
+            </GhostTextMetaData>
+          </value>
+        </entry>
+        <entry key="нет наоборот это должно быть как редактор ча в который ты пишешь и снизу добавляется коменты, главное вынести все в отдельный компонент что бы там только чат был">
+          <value>
+            <GhostTextMetaData>
+              <option name="count" value="1.0" />
+              <option name="timestamps">
+                <list>
+                  <option value="1754822696975" />
                 </list>
               </option>
             </GhostTextMetaData>
@@ -114,9 +210,10 @@
         <entry key="что не так">
           <value>
             <GhostTextMetaData>
-              <option name="count" value="2.0" />
+              <option name="count" value="3.0" />
               <option name="timestamps">
                 <list>
+                  <option value="1754738391291" />
                   <option value="1754681039897" />
                   <option value="1754680872015" />
                 </list>

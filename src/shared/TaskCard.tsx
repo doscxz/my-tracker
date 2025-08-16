@@ -1,17 +1,19 @@
 import { Task } from '@/component/KanbanBoard/KanbanBoard';
 
 interface Props {
-  handleDragStart: () => void;
+  selectTask: (task: Task) => void;
+  handleDragStart?: () => void;
   deleteTask: () => void;
   task: Task;
 }
 
-const TaskCard = ({ deleteTask, handleDragStart, task }: Props) => {
+const TaskCard = ({ selectTask, deleteTask, handleDragStart, task }: Props) => {
   return (
     <div
       draggable
       onDragStart={handleDragStart}
       className="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-move hover:shadow-md transition-shadow group"
+      onClick={() => selectTask(task)}
     >
       <div className="flex justify-between items-start">
         <div className="flex-1">

@@ -1,5 +1,5 @@
 import React from 'react';
-import SideBar from '@/component/SideBar/SideBar';
+import NavigationBar from '@/component/NavigationBar/NavigationBar';
 import './globals.css';
 import { Mulish } from 'next/font/google';
 
@@ -14,7 +14,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={(roboto.className, 'bg-stone-700')}>
         <div className={'flex'}>
-          <SideBar />
+          <NavigationBar />
           {children}
         </div>
       </body>
