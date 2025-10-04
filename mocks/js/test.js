@@ -3,7 +3,8 @@ const delay = require('../delay');
 
 const testJS = {
   setup: (app) => {
-    app.get('/api/v1/test', (request, response) => {
+    app.get('/api/v1/test', async (request, response) => {
+      await delay();
       return response.json(test);
     });
   },

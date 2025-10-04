@@ -22,7 +22,7 @@ const NavigationBar = () => {
   //TODO реализовать логику когда можно растягивать и сжимать aside
   return (
     <SideBar
-      styles="sticky top-0 flex flex-col gap-6 bg-linear-to-t to-cyan-800 from-cyan-900 h-[100vh] w-[312px] px-4 py-6 border-r-1 border-indigo-100"
+      styles="sticky top-0 flex flex-col gap-6 bg-linear-to-t to-cyan-800 from-cyan-900 h-[100vh] min-w-[312px] px-4 py-6 border-r-1 border-indigo-100"
       headerContent={<h1 className={'text-4xl text-slate-300'}>MyTracker</h1>}
     >
       <nav>

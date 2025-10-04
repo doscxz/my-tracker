@@ -1,47 +1,26 @@
 'use client';
-
 import { useState } from 'react';
-import TaskCard from '@/shared/TaskCard';
-import ConfirmModal, { ConfirmModalState } from '@/shared/Modal/ConfirmModal';
-import InputModal, { InputModalState } from '@/shared/Modal/InputModal';
-import TaskModal, { TaskModalState } from '@/shared/Modal/TaskModal';
+import { ConfirmModalState } from '@/shared/Modal/ConfirmModal';
+import { InputModalState } from '@/shared/Modal/InputModal';
+import { onSubmitTaskModal, TaskModalState } from '@/shared/Modal/TaskModal';
 import KanbanModals from '@/component/KanbanBoard/KanbanModals/KanbanModals';
-
-export type Task = {
-  id: string;
-  title: string;
-  description: string;
-};
-
-export type Column = {
-  id: string;
-  title: string;
-  tasks: Task[];
-};
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { TasksByStatus } from '@/store/selectors/tasksByStatusSelector';
+import {
+  addStatus,
+  createTask,
+  removeStatus,
+  removeTask,
+  moveTask,
+  TypeTask,
+} from '@/store/slices/tasksByStatusSlice';
+import { StatusModalState } from '@/shared/Modal/StatusModal';
+import TaskCard from '@/shared/TaskCard';
 
 const KanbanBoard = () => {
-  // TODO Полусать данные с бд
-  const [columns, setColumns] = useState<Column[]>([
-    {
-      id: '1',
-      title: 'К выполнению',
-      tasks: [
-        { id: '1', title: 'Задача 1', description: 'Описание задачи 1' },
-        { id: '2', title: 'Задача 2', description: 'Описание задачи 2' },
-      ],
-    },
-    {
-      id: '2',
-      title: 'В процессе',
-      tasks: [{ id: '3', title: 'Задача 3', description: 'Описание задачи 3' }],
-    },
-    {
-      id: '3',
-      title: 'Выполнено',
-      tasks: [{ id: '4', title: 'Задача 4', description: 'Описание задачи 4' }],
-    },
-  ]);
-
+  const tasksByStatus = useAppSelector(TasksByStatus);
+  console.log(tasksByStatus);
+  const dispatch = useAppDispatch();
   // Modal states
   // TODO хук на state modal - сократит код, улучшит читаемость
   const [confirmModal, setConfirmModal] = useState<ConfirmModalState>({
@@ -61,54 +40,38 @@ const KanbanBoard = () => {
 
   const [taskModal, setTaskModal] = useState<TaskModalState>({
     isOpen: false,
-    columnId: '',
+    status: '',
   });
-
-  const handleDragStart = (task: Task, columnId: string) => {
+  const [statusModal, setStatusModal] = useState<StatusModalState>({
+    isOpen: false,
+    handleClose: () => {},
+  });
+  const handleDragStart = (task: TypeTask, columnId: string) => {
     setDraggedTask(task);
     setDraggedFromColumn(columnId);
   };
 
   const addNewColumn = () => {
-    const newColumn: Column = {
-      id: Date.now().toString(),
-      title: 'Новая колонка',
-      tasks: [],
-    };
-    setColumns([...columns, newColumn]);
+    setStatusModal((prev) => ({ ...prev, isOpen: true }));
+  };
+  const handleStatusCreate = (status: string) => {
+    dispatch(addStatus(status));
+  };
+  const handleTaskCreate: onSubmitTaskModal = (status, title, description) => {
+    dispatch(createTask({ status, title, description }));
   };
 
-  const handleTaskCreate = (title: string, description: string) => {
-    const newTask: Task = {
-      id: Date.now().toString(),
-      title,
-      description,
-    };
-
-    setColumns((prevColumns) =>
-      prevColumns.map((column) =>
-        column.id === taskModal.columnId ? { ...column, tasks: [...column.tasks, newTask] } : column
-      )
-    );
-  };
-
-  const deleteTask = (taskId: string, columnId: string) => {
+  const deleteTask = (taskId: string, status: string) => {
     setConfirmModal({
       isOpen: true,
       title: 'Удаление задачи',
       message: 'Вы уверены, что хотите удалить эту задачу?',
       onConfirm: () => {
-        setColumns((prevColumns) =>
-          prevColumns.map((column) =>
-            column.id === columnId
-              ? { ...column, tasks: column.tasks.filter((task) => task.id !== taskId) }
-              : column
-          )
-        );
+        dispatch(removeTask({ status, taskId }));
       },
     });
   };
-  const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [draggedTask, setDraggedTask] = useState<TypeTask | null>(null);
   const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -123,46 +86,38 @@ const KanbanBoard = () => {
       return;
     }
 
-    setColumns((prevColumns) =>
-      prevColumns.map((column) => ({
-        ...column,
-        tasks:
-          column.id === draggedFromColumn
-            ? column.tasks.filter((task) => task.id !== draggedTask.id)
-            : column.id === targetColumnId
-              ? [...column.tasks, draggedTask]
-              : column.tasks,
-      }))
+    // Используем Redux action для перемещения задачи
+    dispatch(
+      moveTask({
+        taskId: draggedTask.id,
+        fromStatus: draggedFromColumn,
+        toStatus: targetColumnId,
+      })
     );
 
     setDraggedTask(null);
     setDraggedFromColumn(null);
   };
   const editColumnTitle = (columnId: string) => {
-    const currentColumn = columns.find((col) => col.id === columnId);
-
     setInputModal({
       isOpen: true,
       title: 'Редактирование колонки',
       label: 'Название колонки',
-      defaultValue: currentColumn?.title || '',
+      defaultValue: columnId,
       onSubmit: (newTitle: string) => {
-        setColumns((prevColumns) =>
-          prevColumns.map((column) =>
-            column.id === columnId ? { ...column, title: newTitle } : column
-          )
-        );
+        // TODO: Добавить action для переименования колонки в Redux store
+        console.log('Переименование колонки:', columnId, '->', newTitle);
       },
     });
   };
-  const addNewTask = (columnId: string) => {
+  const addNewTask = (status: string) => {
     setTaskModal({
       isOpen: true,
-      columnId,
+      status,
     });
   };
-  const deleteColumn = (columnId: string) => {
-    if (columns.length <= 1) {
+  const deleteColumn = (status: string) => {
+    if (Object.keys(tasksByStatus).length <= 1) {
       setConfirmModal({
         isOpen: true,
         title: 'Невозможно удалить',
@@ -177,12 +132,12 @@ const KanbanBoard = () => {
       title: 'Удаление колонки',
       message: 'Вы уверены, что хотите удалить эту колонку? Все задачи в ней будут потеряны.',
       onConfirm: () => {
-        setColumns(columns.filter((column) => column.id !== columnId));
+        dispatch(removeStatus(status));
       },
     });
   };
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-100 min-h-screen w-[calc(100vw-313px)]">
       <div className="mb-6 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800">Kanban Доска</h1>
         <button
@@ -193,33 +148,33 @@ const KanbanBoard = () => {
         </button>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto pb-6">
-        {columns.map((column) => (
+      <div className="flex gap-6 overflow-x-auto pb-6 w-full scrollbar-hide">
+        {Object.entries(tasksByStatus).map(([status, tasks]) => (
           <div
-            key={column.id}
-            className="bg-white rounded-lg shadow-md p-4 min-w-80 max-w-80"
+            key={status}
+            className="bg-white rounded-lg shadow-md p-4 min-w-80 max-w-80 flex-shrink-0 hover:shadow-lg transition-shadow duration-200"
             onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, column.id)}
+            onDrop={(e) => handleDrop(e, status)}
           >
             <div className="flex justify-between items-center mb-4">
               {/* TODO вынести в отдельный компонент логика которая касается только колонки должна быть внутри*/}
               <h2
                 className="text-lg font-semibold text-gray-700 cursor-pointer hover:text-blue-600"
-                onClick={() => editColumnTitle(column.id)}
+                onClick={() => editColumnTitle(status)}
                 title="Нажмите для редактирования"
               >
-                {column.title}
+                {status}
               </h2>
               <div className="flex gap-2">
                 <button
-                  onClick={() => addNewTask(column.id)}
+                  onClick={() => addNewTask(status)}
                   className="text-green-500 hover:text-green-600 text-sm"
                   title="Добавить задачу"
                 >
                   + Задача
                 </button>
                 <button
-                  onClick={() => deleteColumn(column.id)}
+                  onClick={() => deleteColumn(status)}
                   className="text-red-500 hover:text-red-600 text-sm"
                   title="Удалить колонку"
                 >
@@ -229,14 +184,17 @@ const KanbanBoard = () => {
             </div>
 
             <div className="space-y-3 min-h-32">
-              {column.tasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  deleteTask={() => deleteTask(task.id, column.id)}
-                  handleDragStart={() => handleDragStart(task, column.id)}
-                />
-              ))}
+              {tasks.map(
+                (task) =>
+                  task && (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      deleteTask={() => deleteTask(task.id, status)}
+                      handleDragStart={() => handleDragStart(task, status)}
+                    />
+                  )
+              )}
             </div>
           </div>
         ))}
@@ -250,6 +208,9 @@ const KanbanBoard = () => {
         taskModal={taskModal}
         setTaskModal={setTaskModal}
         handleTaskCreate={handleTaskCreate}
+        statusModal={statusModal}
+        setCloseModalStatus={setStatusModal}
+        handleStatusCreate={handleStatusCreate}
       />
     </div>
   );

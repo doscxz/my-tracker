@@ -1,10 +1,10 @@
-import { Task } from '@/component/KanbanBoard/KanbanBoard';
+import { TypeTask } from '@/store/slices/tasksByStatusSlice';
 
 interface Props {
-  selectTask?: (task: Task) => void;
+  selectTask?: (task: TypeTask) => void;
   handleDragStart?: () => void;
   deleteTask: () => void;
-  task: Task;
+  task: TypeTask;
 }
 
 const TaskCard = ({ selectTask, deleteTask, handleDragStart, task }: Props) => {

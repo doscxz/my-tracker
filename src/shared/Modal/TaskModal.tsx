@@ -4,18 +4,21 @@ import { useState } from 'react';
 import Modal from './Modal';
 export interface TaskModalState {
   isOpen: boolean;
-  columnId: string;
+  status: string;
 }
+export type onSubmitTaskModal = (status: string, title: string, description: string) => void;
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (title: string, description: string) => void;
+  onSubmit: onSubmitTaskModal;
   title: string;
   submitText?: string;
   cancelText?: string;
+  status: string;
 }
 
 const TaskModal = ({
+  status,
   isOpen,
   onClose,
   onSubmit,
@@ -29,7 +32,7 @@ const TaskModal = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (taskTitle.trim()) {
-      onSubmit(taskTitle.trim(), taskDescription.trim());
+      onSubmit(status, taskTitle.trim(), taskDescription.trim());
       onClose();
       setTaskTitle('');
       setTaskDescription('');

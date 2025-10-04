@@ -1,6 +1,7 @@
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,6 +12,7 @@ const compat = new FlatCompat({
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  js.configs.recommended,
   // 1. Игнорируемые файлы
   {
     ignores: ['.next/**', 'node_modules/**', 'out/**', 'dist/**'],
@@ -18,14 +20,14 @@ export default [
 
   // 2. Базовые расширения от Next.js
   ...compat.extends(
-      'next/core-web-vitals',
-      'next/typescript',
-      'plugin:@typescript-eslint/strict',
-      'plugin:unicorn/recommended',
-      'plugin:import/recommended',
-      'plugin:import/typescript',
-      'plugin:jsx-a11y/recommended',
-      'prettier' // должен идти последним
+    'next/core-web-vitals',
+    'next/typescript',
+    'plugin:@typescript-eslint/strict',
+    'plugin:unicorn/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:jsx-a11y/recommended',
+    'prettier' // должен идти последним
   ),
 
   // 3. Переопределения и кастомные правила
@@ -55,7 +57,7 @@ export default [
 
       // === TypeScript ===
       '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/no-unused-vars': 'off', // отключаем, вместо него ниже
+      '@typescript-eslint/no-unused-vars': 'error', // отключаем, вместо него ниже
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'error',
@@ -69,15 +71,7 @@ export default [
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
       'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': [
-        'warn',
-        {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'after-used',
-          argsIgnorePattern: '^_',
-        },
-      ],
+      'unused-imports/no-unused-vars': 'error',
 
       // === React / Next ===
       'react/jsx-sort-props': [

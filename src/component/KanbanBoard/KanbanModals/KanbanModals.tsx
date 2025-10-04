@@ -1,6 +1,7 @@
 import ConfirmModal, { ConfirmModalState } from '@/shared/Modal/ConfirmModal';
 import InputModal, { InputModalState } from '@/shared/Modal/InputModal';
-import TaskModal, { TaskModalState } from '@/shared/Modal/TaskModal';
+import StatusModal, { StatusModalState } from '@/shared/Modal/StatusModal';
+import TaskModal, { onSubmitTaskModal, TaskModalState } from '@/shared/Modal/TaskModal';
 import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
@@ -10,7 +11,10 @@ interface Props {
   setInputModal: Dispatch<SetStateAction<InputModalState>>;
   setTaskModal: Dispatch<SetStateAction<TaskModalState>>;
   taskModal: TaskModalState;
-  handleTaskCreate: (title: string, description: string) => void;
+  handleTaskCreate: onSubmitTaskModal;
+  statusModal: StatusModalState;
+  setCloseModalStatus: Dispatch<SetStateAction<StatusModalState>>;
+  handleStatusCreate: (status: string) => void;
 }
 
 const KanbanModals = ({
@@ -21,6 +25,9 @@ const KanbanModals = ({
   setConfirmModal,
   setInputModal,
   handleTaskCreate,
+  setCloseModalStatus,
+  statusModal,
+  handleStatusCreate,
 }: Props) => {
   return (
     <>
@@ -40,12 +47,17 @@ const KanbanModals = ({
         label={inputModal.label}
         defaultValue={inputModal.defaultValue}
       />
-
       <TaskModal
+        status={taskModal.status}
         isOpen={taskModal.isOpen}
         onClose={() => setTaskModal({ ...taskModal, isOpen: false })}
         onSubmit={handleTaskCreate}
         title="Создание новой задачи"
+      />
+      <StatusModal
+        onSubmit={handleStatusCreate}
+        handleClose={() => setCloseModalStatus({ ...statusModal, isOpen: false })}
+        isOpen={statusModal.isOpen}
       />
     </>
   );

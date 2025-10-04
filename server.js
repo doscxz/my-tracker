@@ -1,7 +1,6 @@
 const express = require('express');
 const next = require('next');
 const bodyParser = require('body-parser');
-const delay = require('./mocks/delay');
 const setupMocker = require('./mocks');
 
 function start() {
@@ -19,11 +18,6 @@ function start() {
     .prepare()
     .then(() => {
       server = express();
-
-      server.use((req, res, next) => {
-        // COMMENT: искуственная задержка
-        setTimeout(next, 5000);
-      });
 
       server.use(bodyParser.json());
       console.log(`Run server: ${dev}`);
