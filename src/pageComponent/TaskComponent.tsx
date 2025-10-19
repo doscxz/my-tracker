@@ -27,7 +27,7 @@ const TaskComponent = () => {
         setSelectTask(updatedTask);
       }
     }
-  }, [tasks, selectTask]);
+  }, [tasks]);
 
   return (
     <div className="flex w-full">

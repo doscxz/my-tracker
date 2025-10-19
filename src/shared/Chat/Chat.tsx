@@ -1,6 +1,9 @@
 'use client';
-
 import { useState } from 'react';
+import ButtonFormatted from './ButtonFormatted';
+import MessageIcon from './assets/send.svg';
+
+export type Color = 'red' | 'yellow' | 'green';
 
 interface Comment {
   id: string;
@@ -57,35 +60,6 @@ const Chat = () => {
     }
   };
 
-  const insertFormatting = (prefix: string, suffix: string = '') => {
-    if (!textareaRef) return;
-
-    const start = textareaRef.selectionStart;
-    const end = textareaRef.selectionEnd;
-    const selectedText = newMessage.substring(start, end);
-    const beforeText = newMessage.substring(0, start);
-    const afterText = newMessage.substring(end);
-
-    const newText = beforeText + prefix + selectedText + suffix + afterText;
-    setNewMessage(newText);
-
-    // Restore cursor position
-    setTimeout(() => {
-      if (textareaRef) {
-        textareaRef.focus();
-        textareaRef.setSelectionRange(start + prefix.length, end + prefix.length);
-      }
-    }, 0);
-  };
-
-  const insertCodeBlock = () => {
-    insertFormatting('```\n', '\n```');
-  };
-
-  const insertHighlight = (color: 'red' | 'yellow' | 'green') => {
-    insertFormatting(`[${color}]`, `[/${color}]`);
-  };
-
   const renderFormattedText = (text: string) => {
     // Handle code blocks
     let formattedText = text.replace(
@@ -124,38 +98,11 @@ const Chat = () => {
       <div className="border-b bg-white p-4 rounded-t-lg">
         {/* Formatting Buttons */}
         <div className="flex flex-wrap gap-2 mb-3 pb-3 border-b border-gray-200">
-          <button
-            onClick={insertCodeBlock}
-            className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded-md transition-colors flex items-center gap-1"
-            title="Вставить код"
-          >
-            <span className="font-mono">&lt;/&gt;</span>
-            Код
-          </button>
-
-          <button
-            onClick={() => insertHighlight('red')}
-            className="px-3 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-800 rounded-md transition-colors"
-            title="Красная подсветка"
-          >
-            🔴 Красный
-          </button>
-
-          <button
-            onClick={() => insertHighlight('yellow')}
-            className="px-3 py-1 text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-800 rounded-md transition-colors"
-            title="Желтая подсветка"
-          >
-            🟡 Желтый
-          </button>
-
-          <button
-            onClick={() => insertHighlight('green')}
-            className="px-3 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors"
-            title="Зеленая подсветка"
-          >
-            🟢 Зеленый
-          </button>
+          <ButtonFormatted
+            textareaRef={textareaRef}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+          />
         </div>
 
         <div className="flex space-x-3">
@@ -177,14 +124,7 @@ const Chat = () => {
               disabled={!newMessage.trim()}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
+              <MessageIcon className="stroke-gray-900 w-4 h-4" />
             </button>
           </div>
         </div>

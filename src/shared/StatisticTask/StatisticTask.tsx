@@ -16,7 +16,7 @@ interface Props {
 const translateDetailsTask: TranslateDetailsTask = {
   type: 'Тип',
   priority: 'Приоритет',
-  tags: 'Тэги',
+  tags: 'Метки',
 };
 
 const StatisticTask = ({ id, details, status }: Props) => {
