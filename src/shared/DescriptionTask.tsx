@@ -4,7 +4,7 @@ const DescriptionTask = () => {
   return (
     <div>
       <TitleTaskPage>Описание</TitleTaskPage>
-      <div title="Нажмите, что бы изменить">{'  '}</div>
+      <div title="Нажмите, что бы изменить"></div>
     </div>
   );
 };

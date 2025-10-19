@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const setupMocker = require('./mocks');
 
 function start() {
-  const port = 3000;
+  const port = 3001;
   const env = process.env.NODE_ENV;
   const dev = env !== 'production';
   const app = next({

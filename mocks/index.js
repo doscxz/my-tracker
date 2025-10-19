@@ -1,4 +1,4 @@
-const mocksJS = [require('./js/test')];
+const mocksJS = [require('./js/tasks')];
 
 const setupMocker = (app) => mocksJS.forEach((mock) => mock.setup(app));
 

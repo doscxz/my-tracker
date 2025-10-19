@@ -1,9 +1,9 @@
-import { Task } from '@/component/KanbanBoard/KanbanBoard';
 import ChooseTask from '@/shared/СhooseTask';
 import Divider from '@/shared/Divider';
-import StatisticTask from '@/shared/StatisticTask';
+import StatisticTask from '@/shared/StatisticTask/StatisticTask';
 import DescriptionTask from '@/shared/DescriptionTask';
 import CommentTask from '@/shared/CommentTask';
+import { Task } from '@/constant/@type';
 
 interface Props {
   selectTask: Task | null;
@@ -16,12 +16,11 @@ const TaskInfo = ({ selectTask }: Props) => {
         <h1>{selectTask.title}</h1>
       </header>
       <Divider />
-      <section className="px-4">
-        <StatisticTask />
+      <div className="px-4">
+        <StatisticTask details={selectTask.details} />
         <DescriptionTask />
         <CommentTask />
-      </section>
-      <footer></footer>
+      </div>
     </div>
   ) : (
     <ChooseTask />

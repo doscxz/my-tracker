@@ -1,10 +1,11 @@
-import { TypeTask } from '@/store/slices/tasksByStatusSlice';
+import { Task } from '@/constant/@type';
+import type React from 'react';
 
 interface Props {
-  selectTask?: (task: TypeTask) => void;
+  selectTask?: (task: Task) => void;
   handleDragStart?: () => void;
-  deleteTask: () => void;
-  task: TypeTask;
+  deleteTask: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  task: Task;
 }
 
 const TaskCard = ({ selectTask, deleteTask, handleDragStart, task }: Props) => {
@@ -21,7 +22,7 @@ const TaskCard = ({ selectTask, deleteTask, handleDragStart, task }: Props) => {
           <p className="text-sm text-gray-600">{task.description}</p>
         </div>
         <button
-          onClick={deleteTask}
+          onClick={(e) => deleteTask(e)}
           className="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity ml-2"
           title="Удалить задачу"
         >

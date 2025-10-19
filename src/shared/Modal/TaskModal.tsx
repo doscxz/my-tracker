@@ -2,11 +2,22 @@
 
 import { useState } from 'react';
 import Modal from './Modal';
+import { Priority } from '@/constant/@type';
 export interface TaskModalState {
   isOpen: boolean;
   status: string;
 }
-export type onSubmitTaskModal = (status: string, title: string, description: string) => void;
+
+export interface TaskFormData {
+  status: string;
+  title: string;
+  description: string;
+  type: string;
+  priority: Priority;
+  tag: string;
+}
+
+export type onSubmitTaskModal = (task: TaskFormData) => void;
 interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,14 +39,28 @@ const TaskModal = ({
 }: TaskModalProps) => {
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
+  const [taskType, setTaskType] = useState('');
+  const [taskPriority, setTaskPriority] = useState<Priority | ''>('');
+  const [taskTag, setTaskTag] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (taskTitle.trim()) {
-      onSubmit(status, taskTitle.trim(), taskDescription.trim());
+    if (taskTitle.trim() && taskPriority) {
+      const taskData: TaskFormData = {
+        status,
+        title: taskTitle.trim(),
+        description: taskDescription.trim(),
+        type: taskType.trim(),
+        priority: taskPriority,
+        tag: taskTag.trim(),
+      };
+      onSubmit(taskData);
       onClose();
       setTaskTitle('');
       setTaskDescription('');
+      setTaskType('');
+      setTaskPriority('');
+      setTaskTag('');
     }
   };
 
@@ -43,6 +68,9 @@ const TaskModal = ({
     onClose();
     setTaskTitle('');
     setTaskDescription('');
+    setTaskType('');
+    setTaskPriority('');
+    setTaskTag('');
   };
 
   return (
@@ -68,6 +96,39 @@ const TaskModal = ({
             placeholder="Введите описание задачи (необязательно)"
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Тип задачи</label>
+          <input
+            type="text"
+            value={taskType}
+            onChange={(e) => setTaskType(e.target.value)}
+            placeholder="Например: Баг, Задача, Улучшение"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Приоритет</label>
+          <select
+            value={taskPriority}
+            onChange={(e) => setTaskPriority(e.target.value as Priority | '')}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Выберите приоритет</option>
+            <option value="Низкий">{Priority.LOW}</option>
+            <option value="Средний">{Priority.MEDIUM}</option>
+            <option value="Высокий">{Priority.HIGH}</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Тег</label>
+          <input
+            type="text"
+            value={taskTag}
+            onChange={(e) => setTaskTag(e.target.value)}
+            placeholder="Например: тест, разработка, дизайн"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
         <div className="flex gap-3 justify-end">

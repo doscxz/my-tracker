@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 interface Comment {
@@ -14,7 +15,7 @@ const Chat = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [textareaRef, setTextareaRef] = useState<HTMLTextAreaElement | null>(null);
-
+  const router = useRouter();
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const comment: Comment = {
@@ -22,7 +23,7 @@ const Chat = () => {
         author: 'Вы',
         message: newMessage.trim(),
         timestamp: new Date(),
-        avatar: '👤'
+        avatar: '👤',
       };
       setComments([...comments, comment]);
       setNewMessage('');
@@ -37,9 +38,9 @@ const Chat = () => {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('ru-RU', { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return date.toLocaleTimeString('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
@@ -59,24 +60,21 @@ const Chat = () => {
 
   const insertFormatting = (prefix: string, suffix: string = '') => {
     if (!textareaRef) return;
-    
+
     const start = textareaRef.selectionStart;
     const end = textareaRef.selectionEnd;
     const selectedText = newMessage.substring(start, end);
     const beforeText = newMessage.substring(0, start);
     const afterText = newMessage.substring(end);
-    
+
     const newText = beforeText + prefix + selectedText + suffix + afterText;
     setNewMessage(newText);
-    
+
     // Restore cursor position
     setTimeout(() => {
       if (textareaRef) {
         textareaRef.focus();
-        textareaRef.setSelectionRange(
-          start + prefix.length,
-          end + prefix.length
-        );
+        textareaRef.setSelectionRange(start + prefix.length, end + prefix.length);
       }
     }, 0);
   };
@@ -107,12 +105,12 @@ const Chat = () => {
       /\[red\](.*?)\[\/red\]/g,
       '<span class="bg-red-200 text-red-800 px-1 py-0.5 rounded">$1</span>'
     );
-    
+
     formattedText = formattedText.replace(
       /\[yellow\](.*?)\[\/yellow\]/g,
       '<span class="bg-yellow-200 text-yellow-800 px-1 py-0.5 rounded">$1</span>'
     );
-    
+
     formattedText = formattedText.replace(
       /\[green\](.*?)\[\/green\]/g,
       '<span class="bg-green-200 text-green-800 px-1 py-0.5 rounded">$1</span>'
@@ -120,9 +118,9 @@ const Chat = () => {
 
     return formattedText;
   };
-
+  //TODO: подумать при выборее может открывать другой пусть с выбаром этой заадчи
   return (
-    <div className="flex flex-col h-full bg-gray-50 rounded-lg">
+    <div className="flex flex-col h-full max-h-screen bg-gray-50 rounded-lg">
       {/* Input Area at Top */}
       <div className="border-b bg-white p-4 rounded-t-lg">
         {/* Formatting Buttons */}
@@ -135,7 +133,7 @@ const Chat = () => {
             <span className="font-mono">&lt;/&gt;</span>
             Код
           </button>
-          
+
           <button
             onClick={() => insertHighlight('red')}
             className="px-3 py-1 text-xs bg-red-100 hover:bg-red-200 text-red-800 rounded-md transition-colors"
@@ -143,7 +141,7 @@ const Chat = () => {
           >
             🔴 Красный
           </button>
-          
+
           <button
             onClick={() => insertHighlight('yellow')}
             className="px-3 py-1 text-xs bg-yellow-100 hover:bg-yellow-200 text-yellow-800 rounded-md transition-colors"
@@ -151,7 +149,7 @@ const Chat = () => {
           >
             🟡 Желтый
           </button>
-          
+
           <button
             onClick={() => insertHighlight('green')}
             className="px-3 py-1 text-xs bg-green-100 hover:bg-green-200 text-green-800 rounded-md transition-colors"
@@ -181,15 +179,20 @@ const Chat = () => {
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
               </svg>
             </button>
           </div>
         </div>
       </div>
-      
+
       {/* Comments Area Below */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 min-h-0 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {comments.length === 0 ? (
           <div className="text-center text-gray-500 py-8">
             <p>Пока нет комментариев</p>
@@ -198,9 +201,10 @@ const Chat = () => {
         ) : (
           <div className="space-y-4">
             {comments.map((comment, index) => {
-              const showDate = index === 0 || 
+              const showDate =
+                index === 0 ||
                 formatDate(comment.timestamp) !== formatDate(comments[index - 1].timestamp);
-              
+
               return (
                 <div key={comment.id}>
                   {/* Date Separator */}
@@ -211,7 +215,7 @@ const Chat = () => {
                       </span>
                     </div>
                   )}
-                  
+
                   {/* Comment */}
                   <div className="flex items-start space-x-3">
                     {/* Avatar */}
@@ -220,7 +224,7 @@ const Chat = () => {
                         {comment.avatar || comment.author.charAt(0)}
                       </div>
                     </div>
-                    
+
                     {/* Comment Content */}
                     <div className="flex-1">
                       <div className="bg-white rounded-lg px-4 py-3 shadow-sm border">
@@ -232,7 +236,7 @@ const Chat = () => {
                             {formatTime(comment.timestamp)}
                           </span>
                         </div>
-                        <div 
+                        <div
                           className="text-gray-700 text-sm whitespace-pre-wrap"
                           dangerouslySetInnerHTML={{ __html: renderFormattedText(comment.message) }}
                         />

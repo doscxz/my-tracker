@@ -1,11 +1,9 @@
+import { Task } from '@/constant/@type';
+import { TaskFormData } from '@/shared/Modal/TaskModal';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-const id = new Date().toLocaleDateString();
-export type TypeTask = {
-  id: string;
-  title: string;
-  description: string;
-};
-type TypeInitialState = Record<string, Partial<TypeTask[]>>; // TODO: вместо string - подвязка по статусу колонки kanbanboard
+const id = Number(new Date().toLocaleDateString());
+
+type TypeInitialState = Record<string, Task[]>; // TODO: вместо string - подвязка по статусу колонки kanbanboard
 
 const initialState: TypeInitialState = {
   backlog: [],
@@ -23,15 +21,24 @@ const tasksByStatusSlice = createSlice({
     },
     createTask: (
       state,
-      {
-        payload: { description, status, title },
-      }: PayloadAction<Omit<TypeTask, 'id'> & { status: string }>
+      { payload: { description, priority, status, tag, title, type } }: PayloadAction<TaskFormData>
     ) => {
-      state[status].push({ id, title, description });
+      state[status].push({
+        id: id,
+        title,
+        status,
+        description,
+        details: {
+          type,
+          priority,
+          tags: tag,
+        },
+        comments: [],
+      });
     },
     removeTask: (
       state,
-      { payload: { taskId, status } }: PayloadAction<{ taskId: TypeTask['id']; status: string }>
+      { payload: { taskId, status } }: PayloadAction<{ taskId: Task['id']; status: string }>
     ) => {
       const index = state[status].findIndex((task) => task?.id === taskId);
       delete state[status][index];
@@ -41,7 +48,7 @@ const tasksByStatusSlice = createSlice({
       {
         payload: { taskId, fromStatus, toStatus },
       }: PayloadAction<{
-        taskId: TypeTask['id'];
+        taskId: Task['id'];
         fromStatus: string;
         toStatus: string;
       }>
@@ -59,10 +66,32 @@ const tasksByStatusSlice = createSlice({
       // Добавить задачу в целевую колонку
       state[toStatus].push(task);
     },
+    distributeTasksByStatus: (state, action: PayloadAction<{ tasks?: Task[] }>) => {
+      const { tasks } = action.payload;
+      if (!tasks) return;
+      // Очистить все текущие статусы (колонки)
+      Object.keys(state).forEach((status) => {
+        state[status] = [];
+      });
+      // Разложить задачи по статусам
+      tasks.forEach((task) => {
+        const status = task.status || 'backlog';
+        if (!state[status]) {
+          state[status] = [];
+        }
+        state[status].push(task);
+      });
+    },
   },
 });
 
-export const { addStatus, removeStatus, createTask, removeTask, moveTask } =
-  tasksByStatusSlice.actions;
+export const {
+  addStatus,
+  removeStatus,
+  createTask,
+  removeTask,
+  moveTask,
+  distributeTasksByStatus,
+} = tasksByStatusSlice.actions;
 
 export default tasksByStatusSlice.reducer;
