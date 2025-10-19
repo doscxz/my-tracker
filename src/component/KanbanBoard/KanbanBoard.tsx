@@ -53,27 +53,31 @@ const KanbanBoard = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen w-[calc(100vw-313px)]">
-      <div className="mb-6 flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Kanban Доска</h1>
-        <CustomButton label="Добавить колонку" onClick={addNewColumn} />
-      </div>
-      <div className="flex">
-        <div className="flex gap-6 overflow-x-auto pb-6 w-full scrollbar-hide">
-          {Object.entries(tasksByStatus).map(([status, tasks]) => (
-            <KanbanColumn
-              key={status}
-              status={status}
-              tasks={tasks}
-              setConfirmModal={setConfirmModal}
-              setInputModal={setInputModal}
-              setTaskModal={setTaskModal}
-              selectTask={handleSelectTask}
-            />
-          ))}
+      <div className="flex justify-between">
+        <div className="w-full overflow-auto">
+          <div className="mb-6 flex  justify-between items-center">
+            <h1 className="text-3xl font-bold text-gray-800">Kanban Доска</h1>
+            <CustomButton label="Добавить колонку" onClick={addNewColumn} />
+          </div>
+          <div className="flex gap-6 overflow-x-auto pb-6 w-full scrollbar-hide">
+            {Object.entries(tasksByStatus).map(([status, tasks]) => (
+              <KanbanColumn
+                key={status}
+                status={status}
+                tasks={tasks}
+                setConfirmModal={setConfirmModal}
+                setInputModal={setInputModal}
+                setTaskModal={setTaskModal}
+                selectTask={handleSelectTask}
+              />
+            ))}
+          </div>
         </div>
-        <div className="border-2 border-amber-400 h-[100vh]">
-          {selectTask && <TaskInfo selectTask={selectTask} />}
-        </div>
+        {selectTask && (
+          <div className="border-2 border-amber-400 max-h-[100vh] translate-y-[-24px] translate-x-[24px]  overflow-y-scroll">
+            <TaskInfo selectTask={selectTask} />
+          </div>
+        )}
       </div>
       {/* Modals */}
       <KanbanModals

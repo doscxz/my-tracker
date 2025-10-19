@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 interface Comment {
@@ -15,7 +14,7 @@ const Chat = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [textareaRef, setTextareaRef] = useState<HTMLTextAreaElement | null>(null);
-  const router = useRouter();
+
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const comment: Comment = {
@@ -118,9 +117,9 @@ const Chat = () => {
 
     return formattedText;
   };
-  //TODO: подумать при выборее может открывать другой пусть с выбаром этой заадчи
+
   return (
-    <div className="flex flex-col h-full max-h-screen bg-gray-50 rounded-lg">
+    <div className="flex flex-col h-full bg-gray-50 rounded-lg">
       {/* Input Area at Top */}
       <div className="border-b bg-white p-4 rounded-t-lg">
         {/* Formatting Buttons */}
