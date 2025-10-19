@@ -3,10 +3,11 @@
     {
       "id": 1,
       "title": "Пробная задача",
+      "status": "backlog",
       "details": {
         "type": "Баг",
         "priority": "Высокий",
-        "tag": "тест"
+        "tags": "тест"
       },
       "description": "Описание задачи",
       "comments": [

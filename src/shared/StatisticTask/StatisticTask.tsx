@@ -9,6 +9,8 @@ type TranslateDetailsTask = {
 };
 interface Props {
   details: Task['details'];
+  id: number;
+  status: string;
 }
 
 const translateDetailsTask: TranslateDetailsTask = {
@@ -17,14 +19,9 @@ const translateDetailsTask: TranslateDetailsTask = {
   tags: 'Тэги',
 };
 
-const StatisticTask = ({ details }: Props) => {
+const StatisticTask = ({ id, details, status }: Props) => {
   const [isContentVisible, setIsContentVisible] = useState(true);
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [statisticsValues, setStatisticsValues] = useState({
-    type: 'Баг',
-    priority: 'Высокий',
-    tags: 'frontend, urgent',
-  });
 
   const toggleContent = () => {
     setIsContentVisible(!isContentVisible);
@@ -41,23 +38,24 @@ const StatisticTask = ({ details }: Props) => {
       </div>
       {isContentVisible && (
         <ul className="flex flex-col mt-2 gap-2">
-          {typedEntries(details).map(([label, key], index) => (
+          {typedEntries(details).map(([key, value], index) => (
             <li key={index} className="flex items-center gap-2">
-              <strong>{translateDetailsTask[label]}</strong>
-              {editingField === key ? (
+              <strong>{translateDetailsTask[key]}</strong>
+              {editingField === value ? (
                 <EditingField
-                  key={key}
-                  statisticsValues={statisticsValues}
-                  setStatisticsValues={setStatisticsValues}
+                  id={id}
+                  status={status}
+                  keyDetails={key}
+                  valueDetails={value}
                   setEditingField={setEditingField}
                 />
               ) : (
                 <span
-                  onClick={() => handleEdit(key)}
+                  onClick={() => handleEdit(value)}
                   className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
                   title="Нажмите, чтобы изменить"
                 >
-                  {statisticsValues[key as keyof typeof statisticsValues]}
+                  {value}
                 </span>
               )}
             </li>

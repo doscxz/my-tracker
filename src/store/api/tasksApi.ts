@@ -3,6 +3,7 @@ import { Task } from '@/constant/@type';
 import { API_BASE_URL } from '@/constant/common';
 import { ENDPOINTS } from '@/constant/endpoints';
 import { Response } from '@/api/@type/response';
+import { distributeTasksByStatus } from '../slices/tasksByStatusSlice';
 
 export const tasksApi = createApi({
   reducerPath: 'tasksApi',
@@ -15,6 +16,14 @@ export const tasksApi = createApi({
       query: () => ENDPOINTS.tasks,
       transformResponse: (response: Response<Task[]>) => response.data,
       providesTags: ['Task'],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(distributeTasksByStatus({ tasks: data }));
+        } catch (error) {
+          console.error('Ошибка при получении задач:', error);
+        }
+      },
     }),
     getTaskById: builder.query<Task, number>({
       query: (id) => `${ENDPOINTS.tasks}/${id}`,

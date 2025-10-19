@@ -17,7 +17,7 @@ const TaskInfo = ({ selectTask }: Props) => {
       </header>
       <Divider />
       <div className="px-4">
-        <StatisticTask details={selectTask.details} />
+        <StatisticTask status={selectTask.status} id={selectTask.id} details={selectTask.details} />
         <DescriptionTask />
         <CommentTask />
       </div>

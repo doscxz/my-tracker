@@ -1,9 +1,9 @@
-import { Task } from '@/constant/@type';
+import { Details, Priority, Task } from '@/constant/@type';
 import { TaskFormData } from '@/shared/Modal/TaskModal';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const id = Number(new Date().toLocaleDateString());
 
-type TypeInitialState = Record<string, Task[]>; // TODO: вместо string - подвязка по статусу колонки kanbanboard
+export type TypeInitialState = Record<string, Task[]>; // TODO: вместо string - подвязка по статусу колонки kanbanboard
 
 const initialState: TypeInitialState = {
   backlog: [],
@@ -18,6 +18,22 @@ const tasksByStatusSlice = createSlice({
     },
     removeStatus: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
+    },
+    editedFiled: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        id: number;
+        statusTask: string;
+        keyDetails: keyof Details;
+        value: string | Priority;
+      }>
+    ) => {
+      const task = state[payload.statusTask].find((task) => task.id === payload.id);
+      if (task) {
+        task['details'][payload.keyDetails] = payload.value as any;
+      }
     },
     createTask: (
       state,
@@ -92,6 +108,7 @@ export const {
   removeTask,
   moveTask,
   distributeTasksByStatus,
+  editedFiled,
 } = tasksByStatusSlice.actions;
 
 export default tasksByStatusSlice.reducer;

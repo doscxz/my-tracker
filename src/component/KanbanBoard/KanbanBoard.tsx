@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { onSubmitTaskModal } from '@/shared/Modal/TaskModal';
 import KanbanModals from '@/component/KanbanBoard/KanbanModals/KanbanModals';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { TasksByStatus } from '@/store/selectors/tasksByStatusSelector';
-import { addStatus, createTask, distributeTasksByStatus } from '@/store/slices/tasksByStatusSlice';
+import { addStatus, createTask } from '@/store/slices/tasksByStatusSlice';
 import CustomButton from '@/shared/CustomButton';
 import { useGetTasksQuery } from '@/store/api/tasksApi';
 import KanbanColumn from './KanbanColumn/KanbanColumn';
@@ -27,15 +27,9 @@ const KanbanBoard = () => {
   } = useModalState();
 
   const tasksByStatus = useAppSelector(TasksByStatus);
-  console.log(tasksByStatus);
   const dispatch = useAppDispatch();
   const { data: tasks } = useGetTasksQuery();
   const [selectTask, setSelectTask] = useState<Task | null>(null);
-  useEffect(() => {
-    if (tasks) {
-      dispatch(distributeTasksByStatus({ tasks }));
-    }
-  }, [tasks]);
 
   const addNewColumn = () => {
     openStatusModal();

@@ -3,27 +3,35 @@ import TaskInfo from '@/component/TaskInfo/TaskInfo';
 import TasksBar from '@/component/TasksBar/TasksBar';
 import { Task } from '@/constant/@type';
 import { useGetTasksQuery } from '@/store/api/tasksApi';
-import { useState } from 'react';
+import { useAppSelector } from '@/store/store';
+import { useState, useEffect } from 'react';
+import { TasksWithoutStatuses } from '@/store/selectors/tasksByStatusSelector';
 
 const TaskComponent = () => {
-  const { data: tasks, isLoading, error } = useGetTasksQuery();
   const [selectTask, setSelectTask] = useState<Task | null>(null);
+  const tasks = useAppSelector(TasksWithoutStatuses);
 
   const selectedTask = (task: Task) => {
     setSelectTask(task);
   };
 
-  if (isLoading) {
-    return <div>Загрузка...</div>;
-  }
+  const updateSelectedTask = (updatedTask: Task) => {
+    setSelectTask(updatedTask);
+  };
 
-  if (error) {
-    return <div>Ошибка при загрузке тасков</div>;
-  }
+  // Синхронизируем выбранную задачу с обновленными данными из store
+  useEffect(() => {
+    if (selectTask && tasks) {
+      const updatedTask = tasks.find((task) => task.id === selectTask.id);
+      if (updatedTask) {
+        setSelectTask(updatedTask);
+      }
+    }
+  }, [tasks, selectTask]);
 
   return (
     <div className="flex w-full">
-      {tasks && <TasksBar selectedTask={selectedTask} tasks={tasks} />}
+      <TasksBar selectedTask={selectedTask} />
       <TaskInfo selectTask={selectTask} />
     </div>
   );
