@@ -26,13 +26,17 @@ const tasksByStatusSlice = createSlice({
       }: PayloadAction<{
         id: number;
         statusTask: string;
-        keyDetails: keyof Details;
+        keyField: keyof Task | keyof Details;
         value: string | Priority;
       }>
     ) => {
       const task = state[payload.statusTask].find((task) => task.id === payload.id);
       if (task) {
-        task['details'][payload.keyDetails] = payload.value as any;
+        if (payload.keyField in task && payload.keyField !== 'details') {
+          (task[payload.keyField as keyof Task] as any) = payload.value;
+        } else {
+          (task.details[payload.keyField as keyof Details] as any) = payload.value;
+        }
       }
     },
     createTask: (

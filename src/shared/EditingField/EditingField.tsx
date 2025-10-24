@@ -1,4 +1,4 @@
-import { Details } from '@/constant/@type';
+import { Details, Task } from '@/constant/@type';
 import { TasksByStatus, TasksWithoutStatuses } from '@/store/selectors/tasksByStatusSelector';
 import { editedFiled } from '@/store/slices/tasksByStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
@@ -12,16 +12,16 @@ interface Props {
   valueDetails: string;
   setEditingField: Dispatch<SetStateAction<string | null>>;
   id: number;
-  keyDetails: keyof Details;
+  keyField: keyof Details | keyof Task;
   status: string;
 }
 
-const EditingField = ({ valueDetails, setEditingField, id, keyDetails, status }: Props) => {
+const EditingField = ({ valueDetails, setEditingField, id, keyField, status }: Props) => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(TasksWithoutStatuses);
   console.log(tasks);
   const handleSave = (valueInput: string) => {
-    dispatch(editedFiled({ id, statusTask: status, keyDetails, value: valueInput }));
+    dispatch(editedFiled({ id, statusTask: status, keyField, value: valueInput }));
     setEditingField(null);
   };
 

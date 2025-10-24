@@ -28,7 +28,6 @@ const KanbanBoard = () => {
 
   const tasksByStatus = useAppSelector(TasksByStatus);
   const dispatch = useAppDispatch();
-  const { data: tasks } = useGetTasksQuery();
   const [selectTask, setSelectTask] = useState<Task | null>(null);
 
   const addNewColumn = () => {
@@ -68,7 +67,7 @@ const KanbanBoard = () => {
           </div>
         </div>
         {selectTask && (
-          <div className="border-2 border-amber-400 max-h-[100vh] translate-y-[-24px] translate-x-[24px]  overflow-y-scroll">
+          <div className="border-2 h-[100vh] border-amber-400 max-h-[100vh] translate-y-[-24px] translate-x-[24px]  overflow-y-scroll">
             <TaskInfo selectTask={selectTask} />
           </div>
         )}

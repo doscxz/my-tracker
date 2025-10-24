@@ -8,7 +8,7 @@ import { Task } from '@/constant/@type';
 interface Props {
   selectTask: Task | null;
 }
-
+// TODO: поудмать над дизайном, может получится сделать что то получше
 const TaskInfo = ({ selectTask }: Props) => {
   return selectTask ? (
     <div className="bg-stone-100 w-full h-full">
@@ -18,7 +18,11 @@ const TaskInfo = ({ selectTask }: Props) => {
       <Divider />
       <div className="px-4">
         <StatisticTask status={selectTask.status} id={selectTask.id} details={selectTask.details} />
-        <DescriptionTask />
+        <DescriptionTask
+          status={selectTask.status}
+          id={selectTask.id}
+          description={selectTask.description}
+        />
         <CommentTask />
       </div>
     </div>
