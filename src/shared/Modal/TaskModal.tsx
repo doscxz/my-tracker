@@ -75,7 +75,7 @@ const TaskModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={title}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" data-cy="task-form">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Название задачи *</label>
           <input
@@ -86,6 +86,7 @@ const TaskModal = ({
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             autoFocus
             required
+            data-cy="task-title-input"
           />
         </div>
         <div>
@@ -96,6 +97,7 @@ const TaskModal = ({
             placeholder="Введите описание задачи (необязательно)"
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            data-cy="task-description-input"
           />
         </div>
         <div>
@@ -106,6 +108,7 @@ const TaskModal = ({
             onChange={(e) => setTaskType(e.target.value)}
             placeholder="Например: Баг, Задача, Улучшение"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            data-cy="task-type-input"
           />
         </div>
         <div>
@@ -114,6 +117,7 @@ const TaskModal = ({
             value={taskPriority}
             onChange={(e) => setTaskPriority(e.target.value as Priority | '')}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            data-cy="task-priority-select"
           >
             <option value="">Выберите приоритет</option>
             <option value="Низкий">{Priority.LOW}</option>
@@ -129,6 +133,7 @@ const TaskModal = ({
             onChange={(e) => setTaskTag(e.target.value)}
             placeholder="Например: тест, разработка, дизайн"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            data-cy="task-tag-input"
           />
         </div>
         <div className="flex gap-3 justify-end">
@@ -136,12 +141,14 @@ const TaskModal = ({
             type="button"
             onClick={handleClose}
             className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            data-cy="task-modal-cancel-button"
           >
             {cancelText}
           </button>
           <button
             type="submit"
             className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            data-cy="task-modal-submit-button"
           >
             {submitText}
           </button>

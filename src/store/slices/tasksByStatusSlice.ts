@@ -1,7 +1,7 @@
 import { Details, Priority, Task } from '@/constant/@type';
 import { TaskFormData } from '@/shared/Modal/TaskModal';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-const id = Number(new Date().toLocaleDateString());
+const id = Number(new Date().getTime());
 
 export type TypeInitialState = Record<string, Task[]>; // TODO: вместо string - подвязка по статусу колонки kanbanboard
 
@@ -61,7 +61,9 @@ const tasksByStatusSlice = createSlice({
       { payload: { taskId, status } }: PayloadAction<{ taskId: Task['id']; status: string }>
     ) => {
       const index = state[status].findIndex((task) => task?.id === taskId);
-      delete state[status][index];
+      if (index !== -1) {
+        state[status].splice(index, 1);
+      }
     },
     moveTask: (
       state,

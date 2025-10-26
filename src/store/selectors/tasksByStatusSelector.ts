@@ -8,7 +8,8 @@ export const TasksByStatus = (state: RootState) => state.tasksByStatus;
 
 export const TasksWithoutStatuses = createSelector(
   TasksByStatus,
-  (statusOnTask: TypeInitialState): Task[] => {
-    return typedEntries(statusOnTask).flatMap(([key, value]) => [...value]);
+  (statusOnTask: TypeInitialState): Task[] | null => {
+    const tasks = typedEntries(statusOnTask).flatMap(([key, value]) => [...value]);
+    return tasks.length > 0 ? tasks : null;
   }
 );

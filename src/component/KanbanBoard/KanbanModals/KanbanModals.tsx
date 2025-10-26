@@ -38,7 +38,6 @@ const KanbanModals = ({
         title={confirmModal.title}
         message={confirmModal.message}
       />
-
       <InputModal
         isOpen={inputModal.isOpen}
         onClose={() => setInputModal({ ...inputModal, isOpen: false })}

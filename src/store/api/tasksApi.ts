@@ -30,38 +30,7 @@ export const tasksApi = createApi({
       transformResponse: (response: Response<Task>) => response.data,
       providesTags: (result, error, id) => [{ type: 'Task', id }],
     }),
-    addTask: builder.mutation<Task, Partial<Task>>({
-      query: (newTask) => ({
-        url: ENDPOINTS.tasks,
-        method: 'POST',
-        body: newTask,
-      }),
-      transformResponse: (response: Response<Task>) => response.data,
-      invalidatesTags: ['Task'],
-    }),
-    updateTask: builder.mutation<Task, { id: number; updates: Partial<Task> }>({
-      query: ({ id, updates }) => ({
-        url: `${ENDPOINTS.tasks}/${id}`,
-        method: 'PUT',
-        body: updates,
-      }),
-      transformResponse: (response: Response<Task>) => response.data,
-      invalidatesTags: (result, error, { id }) => [{ type: 'Task', id }],
-    }),
-    deleteTask: builder.mutation<void, number>({
-      query: (id) => ({
-        url: `${ENDPOINTS.tasks}/${id}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: (result, error, id) => [{ type: 'Task', id }],
-    }),
   }),
 });
 
-export const {
-  useGetTasksQuery,
-  useGetTaskByIdQuery,
-  useAddTaskMutation,
-  useUpdateTaskMutation,
-  useDeleteTaskMutation,
-} = tasksApi;
+export const { useGetTasksQuery, useGetTaskByIdQuery } = tasksApi;

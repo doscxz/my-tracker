@@ -7,6 +7,7 @@ interface Props {
   onClick: VoidFunction;
   kind?: Kind;
   className?: HTMLAttributes<HTMLButtonElement>['className'];
+  'data-cy'?: string;
 }
 
 const buttonStyles: Record<Kind, string> = {
@@ -14,8 +15,14 @@ const buttonStyles: Record<Kind, string> = {
   Borderless: 'text-sm transition-colors',
 } as const;
 
-const CustomButton = ({ label, onClick, kind = 'Primary', className }: Props) => (
-  <button onClick={onClick} className={`${buttonStyles[kind]} ${className || ''}`}>
+const CustomButton = ({
+  label,
+  onClick,
+  kind = 'Primary',
+  className,
+  'data-cy': dataCy,
+}: Props) => (
+  <button onClick={onClick} className={`${buttonStyles[kind]} ${className || ''}`} data-cy={dataCy}>
     {label}
   </button>
 );

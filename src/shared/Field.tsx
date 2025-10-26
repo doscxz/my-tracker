@@ -27,6 +27,7 @@ const Field = ({ status, id, keyField, value }: Props) => {
         />
       ) : (
         <span
+          data-cy={`editable-field-${keyField}-${id}`}
           onClick={() => handleEdit(value)}
           className="cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
           title="Нажмите, чтобы изменить"

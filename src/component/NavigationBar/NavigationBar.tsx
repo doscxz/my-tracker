@@ -23,7 +23,11 @@ const NavigationBar = () => {
   return (
     <SideBar
       styles="sticky top-0 flex flex-col gap-6 bg-linear-to-t to-cyan-800 from-cyan-900 h-[100vh] min-w-[312px] px-4 py-6 border-r-1 border-indigo-100"
-      headerContent={<h1 className={'text-4xl text-slate-300'}>MyTracker</h1>}
+      headerContent={
+        <h1 data-cy="heading-side-bar" className={'text-4xl text-slate-300'}>
+          MyTracker
+        </h1>
+      }
     >
       <nav>
         <ul className="flex flex-col gap-4">
@@ -36,7 +40,7 @@ const NavigationBar = () => {
                 width={24}
                 height={24}
               />
-              <NextLink href={link} className="text-slate-300">
+              <NextLink data-cy={`navigation-link-${label}`} href={link} className="text-slate-300">
                 {label}
               </NextLink>
             </li>

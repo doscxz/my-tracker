@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './Modal';
 
 export interface InputModalState {
@@ -17,8 +17,8 @@ interface InputModalProps {
   onSubmit: (value: string) => void;
   title: string;
   label: string;
+  defaultValue: string;
   placeholder?: string;
-  defaultValue?: string;
   submitText?: string;
   cancelText?: string;
 }
@@ -30,11 +30,17 @@ const InputModal = ({
   title,
   label,
   placeholder = '',
-  defaultValue = '',
+  defaultValue,
   submitText = 'Сохранить',
   cancelText = 'Отмена',
 }: InputModalProps) => {
   const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    if (isOpen) {
+      setValue(defaultValue);
+    }
+  }, [defaultValue, isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +58,7 @@ const InputModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={title}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" data-cy="input-form">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
           <input
@@ -62,6 +68,7 @@ const InputModal = ({
             placeholder={placeholder}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             autoFocus
+            data-cy="input-field"
           />
         </div>
         <div className="flex gap-3 justify-end">
@@ -69,12 +76,14 @@ const InputModal = ({
             type="button"
             onClick={handleClose}
             className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            data-cy="input-modal-cancel-button"
           >
             {cancelText}
           </button>
           <button
             type="submit"
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            data-cy="input-modal-submit-button"
           >
             {submitText}
           </button>

@@ -36,17 +36,21 @@ const ConfirmModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title}>
       <div className="space-y-4">
-        <p className="text-gray-600">{message}</p>
+        <p className="text-gray-600" data-cy="confirm-modal-message">
+          {message}
+        </p>
         <div className="flex gap-3 justify-end">
           <button
             onClick={onClose}
             className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            data-cy="confirm-modal-cancel-button"
           >
             {cancelText}
           </button>
           <button
             onClick={handleConfirm}
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            data-cy="confirm-modal-confirm-button"
           >
             {confirmText}
           </button>

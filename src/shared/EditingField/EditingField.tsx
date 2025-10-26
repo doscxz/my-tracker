@@ -40,6 +40,7 @@ const EditingField = ({ valueDetails, setEditingField, id, keyField, status }: P
       <input
         type="text"
         id={String(id)}
+        data-cy={`editing-input-${keyField}-${id}`}
         defaultValue={valueDetails}
         className="px-2 py-1 border border-gray-300 rounded text-sm"
         onKeyDown={(e) => {
@@ -52,12 +53,14 @@ const EditingField = ({ valueDetails, setEditingField, id, keyField, status }: P
         autoFocus
       />
       <button
+        data-cy={`editing-confirm-button-${keyField}-${id}`}
         onClick={() => handleSaveFromInput()}
         className="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600"
       >
         ✓
       </button>
       <button
+        data-cy={`editing-cancel-button-${keyField}-${id}`}
         onClick={handleCancel}
         className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
       >

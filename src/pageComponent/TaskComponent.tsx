@@ -11,14 +11,6 @@ const TaskComponent = () => {
   const [selectTask, setSelectTask] = useState<Task | null>(null);
   const tasks = useAppSelector(TasksWithoutStatuses);
 
-  const selectedTask = (task: Task) => {
-    setSelectTask(task);
-  };
-
-  const updateSelectedTask = (updatedTask: Task) => {
-    setSelectTask(updatedTask);
-  };
-
   // Синхронизируем выбранную задачу с обновленными данными из store
   useEffect(() => {
     if (selectTask && tasks) {
@@ -31,7 +23,7 @@ const TaskComponent = () => {
 
   return (
     <div className="flex w-full">
-      <TasksBar selectedTask={selectedTask} />
+      <TasksBar selectTask={selectTask} setSelectTask={setSelectTask} />
       <TaskInfo selectTask={selectTask} />
     </div>
   );

@@ -89,15 +89,15 @@ const KanbanColumn = ({
       },
     });
   };
-  const editColumnTitle = (columnId: string) => {
+  const editColumnTitle = (status: string) => {
     setInputModal({
       isOpen: true,
       title: 'Редактирование колонки',
       label: 'Название колонки',
-      defaultValue: columnId,
+      defaultValue: status,
       onSubmit: (newTitle: string) => {
         // TODO: Добавить action для переименования колонки в Redux store
-        console.log('Переименование колонки:', columnId, '->', newTitle);
+        console.log('Переименование колонки:', status, '->', newTitle);
       },
     });
   };
@@ -107,19 +107,21 @@ const KanbanColumn = ({
       status,
     });
   };
-  console.log(tasks);
+
   return (
     <div
       key={status}
       className="bg-white rounded-lg shadow-md p-4 min-w-80 max-w-80 flex-shrink-0 hover:shadow-lg transition-shadow duration-200"
       onDragOver={handleDragOver}
       onDrop={(e) => handleDrop(e, status)}
+      data-cy={`kanban-column-${status.toLowerCase().replace(/\s+/g, '-')}`}
     >
       <div className="flex justify-between items-center mb-4">
         <h2
           className="text-lg font-semibold text-gray-700 cursor-pointer hover:text-blue-600"
           onClick={() => editColumnTitle(status)}
           title="Нажмите для редактирования"
+          data-cy={`column-title-${status.toLowerCase().replace(/\s+/g, '-')}`}
         >
           {status}
         </h2>
@@ -129,16 +131,21 @@ const KanbanColumn = ({
             kind="Borderless"
             label="+ Задача"
             onClick={() => addNewTask(status)}
+            data-cy={`add-task-button-${status.toLowerCase().replace(/\s+/g, '-')}`}
           />
           <CustomButton
             className="text-red-500 hover:text-red-600"
             kind="Borderless"
             label="✕"
             onClick={() => deleteColumn(status)}
+            data-cy={`delete-column-button-${status.toLowerCase().replace(/\s+/g, '-')}`}
           />
         </div>
       </div>
-      <div className="space-y-3 min-h-32">
+      <div
+        className="space-y-3 min-h-32"
+        data-cy={`tasks-container-${status.toLowerCase().replace(/\s+/g, '-')}`}
+      >
         {tasks.map(
           (task) =>
             task && (
