@@ -1,5 +1,5 @@
-import { Details, Priority, Task } from '@/constant/@type';
-import { TaskFormData } from '@/shared/Modal/TaskModal';
+import { Details, Priority, Task } from '../../constant/@type';
+import { TaskFormData } from '../../shared/Modal/TaskModal';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const id = Number(new Date().getTime());
 
