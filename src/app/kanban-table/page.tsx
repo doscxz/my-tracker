@@ -1,6 +1,6 @@
 import KanbanBoard from '@/component/KanbanBoard/KanbanBoard';
 
-const KanbanPage = () => {
+const KanbanPage = async () => {
   return (
     <div className="w-full">
       <KanbanBoard />

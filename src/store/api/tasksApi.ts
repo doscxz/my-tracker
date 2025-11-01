@@ -25,6 +25,15 @@ export const tasksApi = createApi({
         }
       },
     }),
+    createTask: builder.mutation<Task, Partial<Task>>({
+      query: (task) => ({
+        url: ENDPOINTS.tasks,
+        method: 'POST',
+        body: task,
+      }),
+      transformResponse: (response: Response<Task>) => response.data,
+      invalidatesTags: ['Task'],
+    }),
     getTaskById: builder.query<Task, number>({
       query: (id) => `${ENDPOINTS.tasks}/${id}`,
       transformResponse: (response: Response<Task>) => response.data,
@@ -33,4 +42,4 @@ export const tasksApi = createApi({
   }),
 });
 
-export const { useGetTasksQuery, useGetTaskByIdQuery } = tasksApi;
+export const { useGetTasksQuery, useGetTaskByIdQuery, useCreateTaskMutation } = tasksApi;

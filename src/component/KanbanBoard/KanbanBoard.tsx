@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { onSubmitTaskModal } from '@/shared/Modal/TaskModal';
 import KanbanModals from '@/component/KanbanBoard/KanbanModals/KanbanModals';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { TasksByStatus, TasksWithoutStatuses } from '@/store/selectors/tasksByStatusSelector';
+import { TasksByStatus } from '@/store/selectors/tasksByStatusSelector';
 import { addStatus, createTask } from '@/store/slices/tasksByStatusSlice';
 import CustomButton from '@/shared/CustomButton';
-import { useGetTasksQuery } from '@/store/api/tasksApi';
+import { useCreateTaskMutation, useGetTasksQuery } from '@/store/api/tasksApi';
 import KanbanColumn from './KanbanColumn/KanbanColumn';
 import { useModalState } from '@/shared/hooks';
 import { Task } from '@/constant/@type';
@@ -25,10 +25,10 @@ const KanbanBoard = () => {
     setStatusModal,
     openStatusModal,
   } = useModalState();
-  useGetTasksQuery();
   const tasksByStatus = useAppSelector(TasksByStatus);
   const dispatch = useAppDispatch();
   const [selectTask, setSelectTask] = useState<Task | null>(null);
+  const [createTaskMutation, { isLoading: isCreatingTask }] = useCreateTaskMutation();
 
   const addNewColumn = () => {
     openStatusModal();
@@ -36,8 +36,13 @@ const KanbanBoard = () => {
   const handleStatusCreate = (status: string) => {
     dispatch(addStatus(status));
   };
-  const handleTaskCreate: onSubmitTaskModal = (task) => {
-    dispatch(createTask(task));
+  const handleTaskCreate: onSubmitTaskModal = async (task) => {
+    try {
+      await createTaskMutation(task).unwrap();
+      dispatch(createTask(task));
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleSelectTask = (task: Task) => {
@@ -75,6 +80,7 @@ const KanbanBoard = () => {
                 setInputModal={setInputModal}
                 setTaskModal={setTaskModal}
                 selectTask={handleSelectTask}
+                isCreatingTask={isCreatingTask}
               />
             ))}
           </div>

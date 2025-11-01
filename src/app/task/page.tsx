@@ -1,6 +1,6 @@
 import TaskComponent from '@/pageComponent/TaskComponent';
 
-const TaskPage = () => {
+const TaskPage = async () => {
   return <TaskComponent />;
 };
 

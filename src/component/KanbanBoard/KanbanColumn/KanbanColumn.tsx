@@ -8,6 +8,8 @@ import { TasksByStatus } from '@/store/selectors/tasksByStatusSelector';
 import { moveTask, removeStatus, removeTask } from '@/store/slices/tasksByStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Dispatch, SetStateAction, useState } from 'react';
+import ButtonsCreateTaskAndDeleteColumn from './ButtonsCreateTaskAndDeleteColumn/ButtonsCreateTaskAndDeleteColumn';
+import TaskCardLoading from '@/shared/TaskCardLoading';
 
 interface Props {
   status: string;
@@ -16,6 +18,7 @@ interface Props {
   setConfirmModal: Dispatch<SetStateAction<ConfirmModalState>>;
   setInputModal: Dispatch<SetStateAction<InputModalState>>;
   setTaskModal: Dispatch<SetStateAction<TaskModalState>>;
+  isCreatingTask: boolean;
 }
 
 const KanbanColumn = ({
@@ -25,12 +28,13 @@ const KanbanColumn = ({
   setInputModal,
   setTaskModal,
   selectTask,
+  isCreatingTask,
 }: Props) => {
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
   const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
   const tasksByStatus = useAppSelector(TasksByStatus);
   const dispatch = useAppDispatch();
-
+  const formatedStatus = status.toLowerCase().replace(/\s+/g, '-');
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
@@ -43,7 +47,6 @@ const KanbanColumn = ({
       return;
     }
 
-    // Используем Redux action для перемещения задачи
     dispatch(
       moveTask({
         taskId: draggedTask.id,
@@ -114,38 +117,24 @@ const KanbanColumn = ({
       className="bg-white rounded-lg shadow-md p-4 min-w-80 max-w-80 flex-shrink-0 hover:shadow-lg transition-shadow duration-200"
       onDragOver={handleDragOver}
       onDrop={(e) => handleDrop(e, status)}
-      data-cy={`kanban-column-${status.toLowerCase().replace(/\s+/g, '-')}`}
+      data-cy={`kanban-column-${formatedStatus}`}
     >
       <div className="flex justify-between items-center mb-4">
         <h2
           className="text-lg font-semibold text-gray-700 cursor-pointer hover:text-blue-600"
           onClick={() => editColumnTitle(status)}
           title="Нажмите для редактирования"
-          data-cy={`column-title-${status.toLowerCase().replace(/\s+/g, '-')}`}
+          data-cy={`column-title-${formatedStatus}`}
         >
           {status}
         </h2>
-        <div className="flex gap-2">
-          <CustomButton
-            className="text-green-500 hover:text-green-600 "
-            kind="Borderless"
-            label="+ Задача"
-            onClick={() => addNewTask(status)}
-            data-cy={`add-task-button-${status.toLowerCase().replace(/\s+/g, '-')}`}
-          />
-          <CustomButton
-            className="text-red-500 hover:text-red-600"
-            kind="Borderless"
-            label="✕"
-            onClick={() => deleteColumn(status)}
-            data-cy={`delete-column-button-${status.toLowerCase().replace(/\s+/g, '-')}`}
-          />
-        </div>
+        <ButtonsCreateTaskAndDeleteColumn
+          addNewTask={addNewTask}
+          deleteColumn={deleteColumn}
+          status={status}
+        />
       </div>
-      <div
-        className="space-y-3 min-h-32"
-        data-cy={`tasks-container-${status.toLowerCase().replace(/\s+/g, '-')}`}
-      >
+      <div className="space-y-3 min-h-32" data-cy={`tasks-container-${formatedStatus}`}>
         {tasks.map(
           (task) =>
             task && (
@@ -158,6 +147,7 @@ const KanbanColumn = ({
               />
             )
         )}
+        {isCreatingTask && <TaskCardLoading />}
       </div>
     </div>
   );

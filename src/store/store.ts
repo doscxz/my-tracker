@@ -1,16 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { reducer } from './reducers';
 import { tasksApi } from './api/tasksApi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux';
 
-export const store = configureStore({
-  reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(tasksApi.middleware),
-});
+export type RootState = ReturnType<typeof reducer>;
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export function makeStore(preloadedState?: Partial<RootState>) {
+  return configureStore({
+    reducer,
+    preloadedState,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(tasksApi.middleware),
+  });
+}
+
+export type AppStore = ReturnType<typeof makeStore>;
+export type AppDispatch = AppStore['dispatch'];
 
 // HOOK'S
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
-export const useAppSelector = useSelector.withTypes<RootState>();
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
