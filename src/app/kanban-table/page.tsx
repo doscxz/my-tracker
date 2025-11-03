@@ -1,11 +1,7 @@
 import KanbanBoard from '@/component/KanbanBoard/KanbanBoard';
 
 const KanbanPage = async () => {
-  return (
-    <div className="w-full">
-      <KanbanBoard />
-    </div>
-  );
+  return <KanbanBoard />;
 };
 
 export default KanbanPage;

@@ -1,5 +1,7 @@
-import LandingPage from '@/component/LandingPage/LandingPage';
+import TaskComponent from '@/pageComponent/TaskComponent';
 
-export default function Home() {
-  return <LandingPage />;
-}
+const TaskPage = async () => {
+  return <TaskComponent />;
+};
+
+export default TaskPage;

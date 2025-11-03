@@ -1,6 +1,6 @@
 import React from 'react';
 import NavigationBar from '@/component/NavigationBar/NavigationBar';
-import './globals.css';
+import './global.css';
 import { Mulish } from 'next/font/google';
 import Providers from '@/component/Providers/Providers';
 import { makeStore } from '@/store/store';
@@ -19,10 +19,10 @@ export default async function RootLayout({
 
   const preloadedState = store.getState();
   return (
-    <html lang="en">
+    <html lang="ru">
       <body className={(roboto.className, 'bg-stone-700')}>
         <Providers preloadedState={preloadedState}>
-          <div className={'flex'}>
+          <div className="flex">
             <NavigationBar />
             {children}
           </div>

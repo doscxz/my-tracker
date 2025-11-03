@@ -31,7 +31,7 @@ const TasksBar = ({ selectTask, setSelectTask }: Props) => {
   };
 
   return (
-    <SideBar styles="flex flex-col gap-5 bg-linear-to-t to-sky-800 from-blue-900 px-[16px] py-[24px] border-r-1 border-indigo-100">
+    <SideBar styles=" flex flex-col gap-5 bg-linear-to-t to-sky-800 from-blue-900 px-[16px] py-[24px] border-r-1 border-indigo-100 w-full md:w-[286px]">
       <div className="flex flex-col w-2xs gap-2 overflow-y-scroll">
         {isLoading && <span>...Загрузка</span>}
         {error && <span>Произошла ошибка</span>}
