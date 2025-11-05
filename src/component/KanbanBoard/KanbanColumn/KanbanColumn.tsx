@@ -19,6 +19,7 @@ interface Props {
   setInputModal: Dispatch<SetStateAction<InputModalState>>;
   setTaskModal: Dispatch<SetStateAction<TaskModalState>>;
   isCreatingTask: boolean;
+  creatingTaskStatus: string | null;
 }
 
 const KanbanColumn = ({
@@ -29,6 +30,7 @@ const KanbanColumn = ({
   setTaskModal,
   selectTask,
   isCreatingTask,
+  creatingTaskStatus,
 }: Props) => {
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
   const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
@@ -147,7 +149,7 @@ const KanbanColumn = ({
               />
             )
         )}
-        {isCreatingTask && <TaskCardLoading />}
+        {isCreatingTask && creatingTaskStatus === status && <TaskCardLoading />}
       </div>
     </div>
   );

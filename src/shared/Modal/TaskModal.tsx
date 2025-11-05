@@ -1,21 +1,13 @@
 'use client';
-
 import { useState } from 'react';
 import Modal from './Modal';
-import { Priority } from '@/constant/@type';
+import { Priority, Task } from '@/constant/@type';
 export interface TaskModalState {
   isOpen: boolean;
   status: string;
 }
 
-export interface TaskFormData {
-  status: string;
-  title: string;
-  description: string;
-  type: string;
-  priority: Priority;
-  tag: string;
-}
+export type TaskFormData = Omit<Task, 'id'>;
 
 export type onSubmitTaskModal = (task: TaskFormData) => void;
 interface TaskModalProps {
@@ -50,9 +42,11 @@ const TaskModal = ({
         status,
         title: taskTitle.trim(),
         description: taskDescription.trim(),
-        type: taskType.trim(),
-        priority: taskPriority,
-        tag: taskTag.trim(),
+        details: {
+          type: taskType.trim(),
+          priority: taskPriority,
+          tags: taskTag.trim(),
+        },
       };
       onSubmit(taskData);
       onClose();

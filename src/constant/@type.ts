@@ -16,7 +16,7 @@ export type Task = {
   status: string;
   details: Details;
   description: string;
-  comments: {
+  comments?: {
     id: number;
     comment: string;
   }[];

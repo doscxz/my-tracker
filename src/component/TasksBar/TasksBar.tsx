@@ -36,7 +36,7 @@ const TasksBar = ({ selectTask, setSelectTask }: Props) => {
         {isLoading && <span>...Загрузка</span>}
         {error && <span>Произошла ошибка</span>}
         {!isLoading && !error && (
-          <div>
+          <div className="flex flex-col gap-1">
             {hasTasks ? (
               tasks!.map((task) => (
                 <TaskCard

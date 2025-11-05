@@ -10,13 +10,9 @@ import { useCreateTaskMutation, useGetTasksQuery } from '@/store/api/tasksApi';
 import KanbanColumn from './KanbanColumn/KanbanColumn';
 import { useModalState } from '@/shared/hooks';
 import { Task } from '@/constant/@type';
-import TaskInfo from '../TaskInfo/TaskInfo';
-import useWindowSize from '@/shared/hooks/useWindowSize';
-import Modal from '@/shared/Modal/Modal';
-// TODO проблемы с адаптивом
+import InformationSelectTask from './InformationSelectTask/InformationSelectTask';
 
 const KanbanBoard = () => {
-  // Use custom hook for modal state management
   const {
     confirmModal,
     inputModal,
@@ -32,8 +28,7 @@ const KanbanBoard = () => {
   const dispatch = useAppDispatch();
   const [selectTask, setSelectTask] = useState<Task | null>(null);
   const [createTaskMutation, { isLoading: isCreatingTask }] = useCreateTaskMutation();
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 768 ? true : false;
+  const [creatingTaskStatus, setCreatingTaskStatus] = useState<string | null>(null);
 
   const addNewColumn = () => {
     openStatusModal();
@@ -43,10 +38,13 @@ const KanbanBoard = () => {
   };
   const handleTaskCreate: onSubmitTaskModal = async (task) => {
     try {
+      setCreatingTaskStatus(task.status);
       await createTaskMutation(task).unwrap();
       dispatch(createTask(task));
     } catch (e) {
       console.error(e);
+    } finally {
+      setCreatingTaskStatus(null);
     }
   };
 
@@ -59,7 +57,7 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 h-screen w-full" data-cy="kanban-board">
+    <div className="p-6 bg-gray-100 h-screen w-[calc(100%-35px)]" data-cy="kanban-board">
       <div className="flex justify-between">
         <div className="w-full overflow-auto">
           <div className="mb-6 flex  justify-between items-center">
@@ -87,27 +85,12 @@ const KanbanBoard = () => {
                 setTaskModal={setTaskModal}
                 selectTask={handleSelectTask}
                 isCreatingTask={isCreatingTask}
+                creatingTaskStatus={creatingTaskStatus}
               />
             ))}
           </div>
         </div>
-        {selectTask && !isMobile && (
-          <div
-            className="border-2 h-[100vh] border-amber-400 max-h-[100vh] translate-y-[-24px] translate-x-[24px]  overflow-y-scroll"
-            data-cy="task-info-panel"
-          >
-            <TaskInfo selectTask={selectTask} />
-          </div>
-        )}
-        {isMobile && (
-          <Modal
-            isOpen={Boolean(selectTask)}
-            onClose={() => setSelectTask(null)}
-            title="Task Information"
-          >
-            <TaskInfo selectTask={selectTask} />
-          </Modal>
-        )}
+        <InformationSelectTask selectTask={selectTask} setSelectTask={setSelectTask} />
       </div>
       {/* Modals */}
       <KanbanModals
