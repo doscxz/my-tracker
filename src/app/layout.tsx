@@ -20,11 +20,11 @@ export default async function RootLayout({
   const preloadedState = store.getState();
   return (
     <html lang="ru">
-      <body className={(roboto.className, 'bg-stone-700')}>
+      <body className={`${roboto.className} bg-stone-700`}>
         <Providers preloadedState={preloadedState}>
-          <div className="flex">
+          <div className="flex min-h-screen">
             <NavigationBar />
-            {children}
+            <main className="flex-1">{children}</main>
           </div>
         </Providers>
       </body>

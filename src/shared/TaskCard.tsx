@@ -10,12 +10,13 @@ interface Props {
 
 const TaskCard = ({ selectTask, deleteTask, handleDragStart, task }: Props) => {
   return (
-    <div
+    <article
       draggable
       onDragStart={handleDragStart}
       className="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-move hover:shadow-md transition-shadow"
       onClick={() => selectTask?.(task)}
       data-cy={`task-card-${task.id}`}
+      aria-label={`Задача ${task.title}`}
     >
       <div className="flex justify-between items-start">
         <div className="flex-1">
@@ -27,15 +28,17 @@ const TaskCard = ({ selectTask, deleteTask, handleDragStart, task }: Props) => {
           </p>
         </div>
         <button
+          type="button"
           onClick={(e) => deleteTask(e)}
           className="text-red-400 hover:text-red-600 ml-2"
           title="Удалить задачу"
+          aria-label={`Удалить задачу ${task.title}`}
           data-cy={`delete-task-button-${task.id}`}
         >
           ✕
         </button>
       </div>
-    </div>
+    </article>
   );
 };
 

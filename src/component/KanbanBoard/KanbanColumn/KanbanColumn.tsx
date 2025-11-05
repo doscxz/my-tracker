@@ -114,8 +114,8 @@ const KanbanColumn = ({
   };
 
   return (
-    <div
-      key={status}
+    <section
+      aria-labelledby={`column-title-${formatedStatus}`}
       className="bg-white rounded-lg shadow-md p-4 min-w-80 max-w-80 flex-shrink-0 hover:shadow-lg transition-shadow duration-200"
       onDragOver={handleDragOver}
       onDrop={(e) => handleDrop(e, status)}
@@ -123,6 +123,7 @@ const KanbanColumn = ({
     >
       <div className="flex justify-between items-center mb-4">
         <h2
+          id={`column-title-${formatedStatus}`}
           className="text-lg font-semibold text-gray-700 cursor-pointer hover:text-blue-600"
           onClick={() => editColumnTitle(status)}
           title="Нажмите для редактирования"
@@ -136,22 +137,23 @@ const KanbanColumn = ({
           status={status}
         />
       </div>
-      <div className="space-y-3 min-h-32" data-cy={`tasks-container-${formatedStatus}`}>
+      <ul className="space-y-3 min-h-32" data-cy={`tasks-container-${formatedStatus}`}>
         {tasks.map(
           (task) =>
             task && (
-              <TaskCard
-                key={task.id}
-                task={task}
-                deleteTask={() => deleteTask(task.id, status)}
-                handleDragStart={() => handleDragStart(task, status)}
-                selectTask={selectTask}
-              />
+              <li key={task.id}>
+                <TaskCard
+                  task={task}
+                  deleteTask={() => deleteTask(task.id, status)}
+                  handleDragStart={() => handleDragStart(task, status)}
+                  selectTask={selectTask}
+                />
+              </li>
             )
         )}
         {isCreatingTask && creatingTaskStatus === status && <TaskCardLoading />}
-      </div>
-    </div>
+      </ul>
+    </section>
   );
 };
 

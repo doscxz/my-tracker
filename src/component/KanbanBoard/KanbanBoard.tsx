@@ -57,10 +57,10 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 h-screen w-[calc(100%-35px)]" data-cy="kanban-board">
+    <section className="p-6 bg-gray-100 h-screen w-[calc(100%-35px)]" data-cy="kanban-board">
       <div className="flex justify-between">
         <div className="w-full overflow-auto">
-          <div className="mb-6 flex  justify-between items-center">
+          <header className="mb-6 flex justify-between items-center">
             <h1 className="text-[18px] font-bold text-gray-800 md:text-3xl" data-cy="kanban-title">
               Kanban Доска
             </h1>
@@ -69,28 +69,32 @@ const KanbanBoard = () => {
               onClick={addNewColumn}
               data-cy="add-column-button"
             />
-          </div>
+          </header>
 
           <div
-            className="flex gap-6 overflow-x-scroll pb-6 w-full scrollbar-hide"
+            className="flex gap-6 overflow-x-auto pb-6 w-full scrollbar-hide"
             data-cy="kanban-columns-container"
+            role="list"
           >
             {Object.entries(tasksByStatus).map(([status, tasks]) => (
-              <KanbanColumn
-                key={status}
-                status={status}
-                tasks={tasks}
-                setConfirmModal={setConfirmModal}
-                setInputModal={setInputModal}
-                setTaskModal={setTaskModal}
-                selectTask={handleSelectTask}
-                isCreatingTask={isCreatingTask}
-                creatingTaskStatus={creatingTaskStatus}
-              />
+              <div role="listitem" key={status}>
+                <KanbanColumn
+                  status={status}
+                  tasks={tasks}
+                  setConfirmModal={setConfirmModal}
+                  setInputModal={setInputModal}
+                  setTaskModal={setTaskModal}
+                  selectTask={handleSelectTask}
+                  isCreatingTask={isCreatingTask}
+                  creatingTaskStatus={creatingTaskStatus}
+                />
+              </div>
             ))}
           </div>
         </div>
-        <InformationSelectTask selectTask={selectTask} setSelectTask={setSelectTask} />
+        <aside aria-label="Информация о выбранной задаче">
+          <InformationSelectTask selectTask={selectTask} setSelectTask={setSelectTask} />
+        </aside>
       </div>
       {/* Modals */}
       <KanbanModals
@@ -105,7 +109,7 @@ const KanbanBoard = () => {
         handleTaskCreate={handleTaskCreate}
         handleStatusCreate={handleStatusCreate}
       />
-    </div>
+    </section>
   );
 };
 
