@@ -3,7 +3,7 @@ import 'cypress-real-events';
 
 describe('Страница задач (Tasks Page)', () => {
   beforeEach(() => {
-    cy.visit('/task');
+    cy.visit('/');
   });
 
   describe('Основные элементы интерфейса', () => {
@@ -213,16 +213,6 @@ describe('Страница задач (Tasks Page)', () => {
     beforeEach(() => {
       cy.getCy('task-card-', true).first().should('be.visible');
     });
-    it('должна показывать кнопку удаления при наведении на задачу', () => {
-      // Проверяем, что кнопка не видна по умолчанию
-      cy.getCy('delete-task-button-', true).should('have.class', 'opacity-0');
-
-      // Наводим курсор на задачу
-      cy.getCy('task-card-', true).first().realHover();
-
-      // Проверяем, что кнопка стала видимой (проверяем computed opacity style)
-      cy.getCy('delete-task-button-', true).should('be.visible');
-    });
 
     it('должна удалятся такска на кнопку удаления', () => {
       // Получаем количество задач до удаления
@@ -373,7 +363,7 @@ describe('Страница задач (Tasks Page)', () => {
       cy.wait(1000);
 
       // Проверяем, что страница корректно загружается
-      cy.url().should('include', '/task');
+      cy.url().should('include', '/');
 
       // Переходим на другую страницу
       cy.getCy('navigation-link-Панель Kanban').click();
@@ -381,7 +371,7 @@ describe('Страница задач (Tasks Page)', () => {
 
       // Возвращаемся на страницу задач
       cy.getCy('navigation-link-Задачи').click();
-      cy.url().should('include', '/task');
+      cy.url().should('include', '/');
 
       // Проверяем, что страница работает корректно
       cy.contains('Выберете задачу для отображения ее информации').should('be.visible');

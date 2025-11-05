@@ -26,7 +26,7 @@ const TaskComponent = () => {
   }, [tasks]);
 
   return (
-    <div className="flex w-[calc(100%-35px)] min-h-screen">
+    <div className="flex w-full min-h-screen">
       <TasksBar selectTask={selectTask} setSelectTask={setSelectTask} />
       <div className="hidden w-full md:block">
         <TaskInfo selectTask={selectTask} />

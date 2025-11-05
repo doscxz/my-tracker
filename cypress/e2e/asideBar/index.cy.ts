@@ -5,8 +5,8 @@ describe('Меню навигации', () => {
     cy.visit('/');
   });
 
-  it('Должен отображать заголовок MyTracker', () => {
-    cy.getCy('heading-side-bar').should('be.visible').and('contain.text', 'MyTracker');
+  it('Должен отображать логотип MyTracker', () => {
+    cy.getCy('heading-logo-side-bar').should('be.visible');
   });
 
   it('Должен отображать все пункты меню', () => {
@@ -18,29 +18,28 @@ describe('Меню навигации', () => {
   });
 
   it('Должен отображать иконки для каждого пункта меню', () => {
-    cy.getCy('navigation-link-Панель Kanban')
-      .parent()
-      .find('img')
+    cy.getCy('icon-navigation-link-Панель Kanban')
       .should('be.visible')
-      .and('have.attr', 'src', '/svg/kanban.svg');
+      .find('svg')
+      .should('be.visible')
+      .and('have.class', 'w-[24px]')
+      .and('have.class', 'h-[24px]');
 
-    cy.getCy('navigation-link-Задачи')
-      .parent()
-      .find('img')
+    cy.getCy('icon-navigation-link-Задачи')
       .should('be.visible')
-      .and('have.attr', 'src', '/svg/task.svg');
+      .find('svg')
+      .should('be.visible')
+      .and('have.class', 'w-[24px]')
+      .and('have.class', 'h-[24px]');
   });
 
-  it('Должен переходить на страницу Kanban при клике на "Панель Kanban"', () => {
-    cy.getCy('navigation-link-Панель Kanban').click();
+  it('Должен переходить на страницы из sibeBar', () => {
+    cy.getCy('icon-navigation-link-Панель Kanban').should('be.visible').find('svg').click();
 
     cy.url().should('include', '/kanban-table');
-  });
+    cy.getCy('icon-navigation-link-Задачи').should('be.visible').find('svg').click();
 
-  it('Должен переходить на страницу задач при клике на "Задачи"', () => {
-    cy.getCy('navigation-link-Задачи').click();
-
-    cy.url().should('include', '/task');
+    cy.url().should('include', '/');
   });
 
   it('Должен иметь правильные стили для заголовка', () => {

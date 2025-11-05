@@ -31,7 +31,7 @@ const NavigationBar = () => {
           MyTracker
         </h1>
       }
-      logoContent={<Logo className={'w-6 h-6'} />}
+      logoContent={<Logo data-cy="heading-logo-side-bar" className={'w-6 h-6'} />}
     >
       <nav>
         <ul className="flex flex-col gap-4">
@@ -42,7 +42,12 @@ const NavigationBar = () => {
                 href={link}
                 className="flex items-center gap-2 text-slate-300"
               >
-                <div className="filter invert brightness-0 contrast-100">{icon}</div>
+                <div
+                  data-cy={`icon-navigation-link-${label}`}
+                  className="filter invert brightness-0 contrast-100"
+                >
+                  {icon}
+                </div>
                 <span className="hidden lg:block">{label}</span>
               </NextLink>
             </li>

@@ -57,7 +57,7 @@ const KanbanBoard = () => {
   };
 
   return (
-    <section className="p-6 bg-gray-100 h-screen w-[calc(100%-35px)]" data-cy="kanban-board">
+    <section className="p-6 bg-gray-100 h-screen w-full" data-cy="kanban-board">
       <div className="flex justify-between">
         <div className="w-full overflow-auto">
           <header className="mb-6 flex justify-between items-center">
