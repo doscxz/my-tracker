@@ -41,18 +41,14 @@ const tasksByStatusSlice = createSlice({
     },
     createTask: (
       state,
-      { payload: { description, priority, status, tag, title, type } }: PayloadAction<TaskFormData>
+      { payload: { description, status, title, details } }: PayloadAction<TaskFormData>
     ) => {
       state[status].push({
         id: id,
         title,
         status,
         description,
-        details: {
-          type,
-          priority,
-          tags: tag,
-        },
+        details,
         comments: [],
       });
     },

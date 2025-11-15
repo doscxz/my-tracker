@@ -29,6 +29,8 @@ const KanbanBoard = () => {
   const [selectTask, setSelectTask] = useState<Task | null>(null);
   const [createTaskMutation, { isLoading: isCreatingTask }] = useCreateTaskMutation();
   const [creatingTaskStatus, setCreatingTaskStatus] = useState<string | null>(null);
+  const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
 
   const addNewColumn = () => {
     openStatusModal();
@@ -87,6 +89,10 @@ const KanbanBoard = () => {
                   selectTask={handleSelectTask}
                   isCreatingTask={isCreatingTask}
                   creatingTaskStatus={creatingTaskStatus}
+                  draggedTask={draggedTask}
+                  draggedFromColumn={draggedFromColumn}
+                  setDraggedTask={setDraggedTask}
+                  setDraggedFromColumn={setDraggedFromColumn}
                 />
               </div>
             ))}
