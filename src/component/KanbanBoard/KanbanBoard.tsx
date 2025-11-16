@@ -38,7 +38,9 @@ const KanbanBoard = observer(() => {
     try {
       setCreatingTaskStatus(task.status);
       await store.tasksApi.createTask(task);
+      console.log('1 до строчки выполнения action:', tasksByStatus);
       store.tasksByStatus.createTask(task);
+      console.log('2 после строчки выполнения action:', tasksByStatus);
     } catch (e) {
       console.error(e);
     } finally {
@@ -54,6 +56,7 @@ const KanbanBoard = observer(() => {
     setSelectTask(task);
   };
 
+  console.log('6. [View] Рендер компонента с значением:', tasksByStatus);
   const isCreatingTask = store.tasksApi.isLoading;
 
   return (
