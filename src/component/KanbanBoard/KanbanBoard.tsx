@@ -9,7 +9,6 @@ import KanbanColumn from './KanbanColumn/KanbanColumn';
 import { useModalState } from '@/shared/hooks';
 import { Task } from '@/constant/@type';
 import InformationSelectTask from './InformationSelectTask/InformationSelectTask';
-import { checkMemory } from '@/helper/checkMemory';
 
 const KanbanBoard = observer(() => {
   const {
@@ -40,7 +39,7 @@ const KanbanBoard = observer(() => {
       setCreatingTaskStatus(task.status);
       await store.tasksApi.createTask(task);
       console.log('1 до строчки выполнения action:', tasksByStatus);
-      // store.tasksByStatus.createTask(task);
+      store.tasksByStatus.createTask(task);
       console.log('2 после строчки выполнения action:', tasksByStatus);
       // COMMENT: Проверка скорости выполнения создание задач redux
       // const start = performance.now();
@@ -51,7 +50,27 @@ const KanbanBoard = observer(() => {
       // console.log('Время выполнения 1000 задач', end - start); // 21.599999994039536
 
       // COMMENT: Проверка занимаемой памяти
-      // checkMemory(1000, task, store.tasksByStatus.createTask);
+      // const initialMemory = performance.memory.usedJSHeapSize;
+      // const tasks = [];
+      // for (let i = 0; i < 1000; i++) {
+      //   const newTask = { ...task, title: task.title + i };
+      //   tasks.push(newTask);
+      //   store.tasksByStatus.createTask(newTask);
+      // }
+      // // Принудительно ждем и предотвращаем оптимизацию
+      // await new Promise((resolve) => {
+      //   setTimeout(() => {
+      //     // Используем tasks чтобы предотвратить GC
+      //     console.log(tasks.length);
+      //     resolve(null);
+      //   }, 200);
+      // });
+      // // @ts-ignore
+      // const finalMemory = performance.memory.usedJSHeapSize;
+      // const memoryUsed = (finalMemory - initialMemory) / 1024 / 1024;
+      // console.log('Было занято памяти:', memoryUsed.toFixed(2), 'MB'); //Было занято памяти: 64.71 MB
+      // console.log('Начальная память:', (initialMemory / 1024 / 1024).toFixed(2), 'MB'); // Начальная память: 84.42 MB
+      // console.log('Конечная память:', (finalMemory / 1024 / 1024).toFixed(2), 'MB'); // Конечная память: 149.13 MB
     } catch (e) {
       console.error(e);
     } finally {
