@@ -15,7 +15,6 @@ const TaskComponent = observer(() => {
   const windowSize = useWindowSize();
   const isMobile = windowSize.width < 768 ? true : false;
 
-  // Синхронизируем выбранную задачу с обновленными данными из store
   useEffect(() => {
     if (selectTask && tasks) {
       const updatedTask = tasks.find((task) => task.id === selectTask.id);
@@ -23,8 +22,7 @@ const TaskComponent = observer(() => {
         setSelectTask(updatedTask);
       }
     }
-  }, [tasks]);
-
+  }, [selectTask]);
   return (
     <div className="flex w-full min-h-screen">
       <TasksBar selectTask={selectTask} setSelectTask={setSelectTask} />

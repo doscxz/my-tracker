@@ -5,6 +5,7 @@ import EditingField from '../EditingField/EditingField';
 import { Task } from '@/constant/@type';
 import { typedEntries } from '@/helper/typesObjectFunction';
 import Field from '../Field';
+import { observer } from 'mobx-react-lite';
 type TranslateDetailsTask = {
   [K in keyof Task['details']]: string;
 };
@@ -20,7 +21,7 @@ const translateDetailsTask: TranslateDetailsTask = {
   tags: 'Метки',
 };
 
-const StatisticTask = ({ id, details, status }: Props) => {
+const StatisticTask = observer(({ id, details, status }: Props) => {
   const [isContentVisible, setIsContentVisible] = useState<boolean>(true);
 
   const toggleContent = (isVisible?: boolean) => {
@@ -44,6 +45,6 @@ const StatisticTask = ({ id, details, status }: Props) => {
       )}
     </div>
   );
-};
+});
 
 export default StatisticTask;

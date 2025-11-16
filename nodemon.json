@@ -1,0 +1,6 @@
+{
+  "watch": ["src", "server.js", "mocks"],
+  "ignore": [".next", "node_modules", ".git", "cypress", "public"],
+  "ext": "js,json,ts,tsx",
+  "exec": "node server.js"
+}

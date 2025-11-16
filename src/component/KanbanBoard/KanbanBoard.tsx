@@ -28,7 +28,6 @@ const KanbanBoard = observer(() => {
   const tasksByStatus = store.tasksByStatus.initialState;
   const [selectTask, setSelectTask] = useState<Task | null>(null);
   const [creatingTaskStatus, setCreatingTaskStatus] = useState<string | null>(null);
-
   const addNewColumn = () => {
     openStatusModal();
   };

@@ -4,6 +4,7 @@ import './global.css';
 import { Mulish } from 'next/font/google';
 import Providers from '@/component/Providers/Providers';
 import { initializeStore, InitialData } from '@/storeMobX/store';
+import { toJS } from 'mobx';
 
 const roboto = Mulish({ subsets: ['latin'] });
 
@@ -15,11 +16,9 @@ export default async function RootLayout({
   const store = initializeStore();
 
   await store.tasksApi.getTasks();
-
-  // Serialize store data to plain object (like preloadedState in Redux)
   const initialData: InitialData = {
     tasksByStatus: {
-      initialState: JSON.parse(JSON.stringify(store.tasksByStatus.initialState)),
+      initialState: toJS(store.tasksByStatus.initialState),
     },
   };
 

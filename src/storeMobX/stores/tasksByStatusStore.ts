@@ -6,9 +6,7 @@ import { typedEntries } from '@/helper/typesObjectFunction';
 export type TypeInitialState = Record<string, Task[]>;
 
 class TasksByStatusStore {
-  initialState: TypeInitialState = {
-    backlog: [],
-  };
+  initialState: TypeInitialState = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -20,7 +18,6 @@ class TasksByStatusStore {
     return tasks.length > 0 ? tasks : null;
   }
 
-  // Actions
   addStatus(status: string) {
     this.initialState[status] = [];
   }
@@ -108,6 +105,20 @@ class TasksByStatusStore {
           this.initialState[status] = [];
         }
         this.initialState[status].push(task);
+      });
+    });
+  }
+
+  setInitialState(initialState: TypeInitialState) {
+    runInAction(() => {
+      // Очистить текущее состояние
+      Object.keys(this.initialState).forEach((key) => {
+        delete this.initialState[key];
+      });
+
+      // Добавить новые данные - makeAutoObservable автоматически сделает их observable
+      Object.entries(initialState).forEach(([key, value]) => {
+        this.initialState[key] = Array.isArray(value) ? [...value] : value;
       });
     });
   }

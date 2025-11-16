@@ -19,30 +19,21 @@ function createStore(): RootStore {
   return store;
 }
 
-let clientSideStore: RootStore | undefined;
+let store: RootStore = createStore();
 
 // Type for serialized initial data (plain object)
 export type InitialData = {
-  tasksByStatus?: {
+  tasksByStatus: {
     initialState: Record<string, Task[]>;
   };
 };
 
 export function initializeStore(initialData: InitialData | null = null): RootStore {
-  if (isServer) {
-    return createStore();
-  }
-
-  if (!clientSideStore) {
-    clientSideStore = createStore();
-  }
-
-  // Hydrate store with serialized initial data
   if (initialData?.tasksByStatus?.initialState) {
-    clientSideStore.tasksByStatus.initialState = initialData.tasksByStatus.initialState;
+    store.tasksByStatus.setInitialState(initialData.tasksByStatus.initialState);
   }
 
-  return clientSideStore;
+  return store;
 }
 
 export type { RootStore };
