@@ -1,7 +1,8 @@
-import TaskInfo from '@/component/TaskInfo/TaskInfo';
 import { Task } from '@/constant/@type';
 import useWindowSize from '@/shared/hooks/useWindowSize';
 import Modal from '@/shared/Modal/Modal';
+import dynamic from 'next/dynamic';
+const TaskInfo = dynamic(() => import('@/component/TaskInfo/TaskInfo')); // перености chunk на в серверный bundl
 
 interface Props {
   selectTask: Task | null;
