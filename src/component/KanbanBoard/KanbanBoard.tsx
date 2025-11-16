@@ -42,16 +42,23 @@ const KanbanBoard = () => {
     try {
       setCreatingTaskStatus(task.status);
       await createTaskMutation(task).unwrap;
-      console.log('1. [View] Пользователь нажал кнопку для создание задачи');
-      console.log('2. [Action] Диспатчим action...');
+      console.log('1 до строчки выполнения action:', tasksByStatus);
       dispatch(createTask(task));
+      console.log('2 после строчки выполнения action:', tasksByStatus);
+
+      // COMMENT: Проверка скорости выполнения создание задач redux
+      // const start = performance.now();
+      // for (let i = 0; i < 1000; i++) {
+      //   dispatch(createTask({ ...task, title: task.title + i }));
+      // }
+      // const end = performance.now();
+      // console.log('Время выполнения 1000 задач', end - start); // 370.39999997615814
     } catch (e) {
       console.error(e);
     } finally {
       setCreatingTaskStatus(null);
     }
   };
-  console.log('6. [View] Рендер компонента с значением:', tasksByStatus);
   const handleSelectTask = (task: Task) => {
     if (selectTask?.id === task.id) {
       setSelectTask(null);

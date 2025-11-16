@@ -43,8 +43,6 @@ const tasksByStatusSlice = createSlice({
       state,
       { payload: { description, status, title, details } }: PayloadAction<TaskFormData>
     ) => {
-      console.log('3. [Reducer] Выполняется reducer...');
-      console.log('4. [Reducer] Текущее состояние:', state[status]);
       state[status].push({
         id: id,
         title,
@@ -53,7 +51,6 @@ const tasksByStatusSlice = createSlice({
         details,
         comments: [],
       });
-      console.log('5. [Reducer] Новое состояние:', state[status]);
     },
     removeTask: (
       state,
