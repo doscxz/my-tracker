@@ -9,6 +9,7 @@ import KanbanColumn from './KanbanColumn/KanbanColumn';
 import { useModalState } from '@/shared/hooks';
 import { Task } from '@/constant/@type';
 import InformationSelectTask from './InformationSelectTask/InformationSelectTask';
+import { checkMemory } from '@/helper/checkMemory';
 
 const KanbanBoard = observer(() => {
   const {
@@ -50,28 +51,7 @@ const KanbanBoard = observer(() => {
       // console.log('Время выполнения 1000 задач', end - start); // 21.599999994039536
 
       // COMMENT: Проверка занимаемой памяти
-
-      // const initialMemory = performance.memory.usedJSHeapSize;
-      // const tasks = [];
-      // for (let i = 0; i < 1000; i++) {
-      //   const newTask = { ...task, title: task.title + i };
-      //   tasks.push(newTask);
-      //   store.tasksByStatus.createTask(newTask);
-      // }
-      // // Принудительно ждем и предотвращаем оптимизацию
-      // await new Promise((resolve) => {
-      //   setTimeout(() => {
-      //     // Используем tasks чтобы предотвратить GC
-      //     console.log(tasks.length);
-      //     resolve();
-      //   }, 200);
-      // });
-
-      // const finalMemory = performance.memory.usedJSHeapSize;
-      // const memoryUsed = (finalMemory - initialMemory) / 1024 / 1024;
-      // console.log('Было занято памяти:', memoryUsed.toFixed(2), 'MB'); //Было занято памяти: 64.71 MB
-      // console.log('Начальная память:', (initialMemory / 1024 / 1024).toFixed(2), 'MB'); // Начальная память: 84.42 MB
-      // console.log('Конечная память:', (finalMemory / 1024 / 1024).toFixed(2), 'MB'); // Конечная память: 149.13 MB
+      // checkMemory(1000, task, store.tasksByStatus.createTask);
     } catch (e) {
       console.error(e);
     } finally {
