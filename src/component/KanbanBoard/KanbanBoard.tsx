@@ -56,7 +56,28 @@ const KanbanBoard = () => {
       // console.log('Время выполнения 1000 задач', end - start); // 370.39999997615814
 
       // COMMENT: Проверка занимаемой памяти
-      // сheckingMemory(1000, task, createTask);
+      // @ts-ignore
+      // const initialMemory = performance.memory.usedJSHeapSize;
+      // const tasks = [];
+      // for (let i = 0; i < 1000; i++) {
+      //   const newTask = { ...task, title: task.title + i };
+      //   tasks.push(newTask);
+      //   dispatch(createTask(newTask));
+      // }
+      // // Принудительно ждем и предотвращаем оптимизацию
+      // await new Promise((resolve) => {
+      //   setTimeout(() => {
+      //     // Используем tasks чтобы предотвратить очистку
+      //     console.log(tasks.length);
+      //     resolve(null);
+      //   }, 200);
+      // });
+      // // @ts-ignore
+      // const finalMemory = performance.memory.usedJSHeapSize;
+      // const memoryUsed = (finalMemory - initialMemory) / 1024 / 1024;
+      // console.log('Было занято памяти:', memoryUsed.toFixed(2), 'MB'); //Было занято памяти: 21.82 MB
+      // console.log('Начальная память:', (initialMemory / 1024 / 1024).toFixed(2), 'MB'); // Начальная память: 89.83 MB
+      // console.log('Конечная память:', (finalMemory / 1024 / 1024).toFixed(2), 'MB'); // Конечная память: 111.65 MB
     } catch (e) {
       console.error(e);
     } finally {
