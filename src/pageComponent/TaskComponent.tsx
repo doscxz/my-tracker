@@ -2,16 +2,16 @@
 import TaskInfo from '@/component/TaskInfo/TaskInfo';
 import TasksBar from '@/component/TasksBar/TasksBar';
 import { Task } from '@/constant/@type';
-import { useGetTasksQuery } from '@/store/api/tasksApi';
-import { useAppSelector } from '@/store/store';
 import { useState, useEffect } from 'react';
-import { TasksWithoutStatuses } from '@/store/selectors/tasksByStatusSelector';
 import Modal from '@/shared/Modal/Modal';
 import useWindowSize from '@/shared/hooks/useWindowSize';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '@/storeMobX/StoreContext';
 
-const TaskComponent = () => {
+const TaskComponent = observer(() => {
   const [selectTask, setSelectTask] = useState<Task | null>(null);
-  const tasks = useAppSelector(TasksWithoutStatuses);
+  const store = useStore();
+  const tasks = store.tasksByStatus.tasksWithoutStatuses;
   const windowSize = useWindowSize();
   const isMobile = windowSize.width < 768 ? true : false;
 
@@ -42,6 +42,6 @@ const TaskComponent = () => {
       )}
     </div>
   );
-};
+});
 
 export default TaskComponent;

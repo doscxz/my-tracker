@@ -1,12 +1,7 @@
 import { Details, Task } from '@/constant/@type';
-import { TasksByStatus, TasksWithoutStatuses } from '@/store/selectors/tasksByStatusSelector';
-import { editedFiled } from '@/store/slices/tasksByStatusSlice';
-import { useAppDispatch, useAppSelector } from '@/store/store';
+import { useStore } from '@/storeMobX/StoreContext';
 import { Dispatch, SetStateAction } from 'react';
-
-type StatisticsValues = {
-  [key in 'type' | 'priority' | 'tags']: string;
-};
+import { observer } from 'mobx-react-lite';
 
 interface Props {
   valueDetails: string;
@@ -16,12 +11,11 @@ interface Props {
   status: string;
 }
 
-const EditingField = ({ valueDetails, setEditingField, id, keyField, status }: Props) => {
-  const dispatch = useAppDispatch();
-  const tasks = useAppSelector(TasksWithoutStatuses);
-  console.log(tasks);
+const EditingField = observer(({ valueDetails, setEditingField, id, keyField, status }: Props) => {
+  const { tasksByStatus } = useStore();
+
   const handleSave = (valueInput: string) => {
-    dispatch(editedFiled({ id, statusTask: status, keyField, value: valueInput }));
+    tasksByStatus.editedFiled({ id, statusTask: status, keyField, value: valueInput });
     setEditingField(null);
   };
 
@@ -68,6 +62,6 @@ const EditingField = ({ valueDetails, setEditingField, id, keyField, status }: P
       </button>
     </div>
   );
-};
+});
 
 export default EditingField;

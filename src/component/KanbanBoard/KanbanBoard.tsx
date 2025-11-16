@@ -1,18 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import { onSubmitTaskModal } from '@/shared/Modal/TaskModal';
 import KanbanModals from '@/component/KanbanBoard/KanbanModals/KanbanModals';
-import { useAppDispatch, useAppSelector } from '@/store/store';
-import { TasksByStatus } from '@/store/selectors/tasksByStatusSelector';
-import { addStatus, createTask } from '@/store/slices/tasksByStatusSlice';
+import { useStore } from '@/storeMobX/StoreContext';
 import CustomButton from '@/shared/CustomButton';
-import { useCreateTaskMutation, useGetTasksQuery } from '@/store/api/tasksApi';
 import KanbanColumn from './KanbanColumn/KanbanColumn';
 import { useModalState } from '@/shared/hooks';
 import { Task } from '@/constant/@type';
 import InformationSelectTask from './InformationSelectTask/InformationSelectTask';
 
-const KanbanBoard = () => {
+const KanbanBoard = observer(() => {
   const {
     confirmModal,
     inputModal,
@@ -24,23 +22,24 @@ const KanbanBoard = () => {
     setStatusModal,
     openStatusModal,
   } = useModalState();
-  const tasksByStatus = useAppSelector(TasksByStatus);
-  const dispatch = useAppDispatch();
+  const store = useStore();
+  const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
+  const tasksByStatus = store.tasksByStatus.initialState;
   const [selectTask, setSelectTask] = useState<Task | null>(null);
-  const [createTaskMutation, { isLoading: isCreatingTask }] = useCreateTaskMutation();
   const [creatingTaskStatus, setCreatingTaskStatus] = useState<string | null>(null);
 
   const addNewColumn = () => {
     openStatusModal();
   };
   const handleStatusCreate = (status: string) => {
-    dispatch(addStatus(status));
+    store.tasksByStatus.addStatus(status);
   };
   const handleTaskCreate: onSubmitTaskModal = async (task) => {
     try {
       setCreatingTaskStatus(task.status);
-      await createTaskMutation(task).unwrap();
-      dispatch(createTask(task));
+      await store.tasksApi.createTask(task);
+      store.tasksByStatus.createTask(task);
     } catch (e) {
       console.error(e);
     } finally {
@@ -55,6 +54,8 @@ const KanbanBoard = () => {
     }
     setSelectTask(task);
   };
+
+  const isCreatingTask = store.tasksApi.isLoading;
 
   return (
     <section className="p-6 bg-gray-100 h-screen w-full" data-cy="kanban-board">
@@ -87,6 +88,10 @@ const KanbanBoard = () => {
                   selectTask={handleSelectTask}
                   isCreatingTask={isCreatingTask}
                   creatingTaskStatus={creatingTaskStatus}
+                  draggedTask={draggedTask}
+                  setDraggedTask={setDraggedTask}
+                  draggedFromColumn={draggedFromColumn}
+                  setDraggedFromColumn={setDraggedFromColumn}
                 />
               </div>
             ))}
@@ -111,6 +116,6 @@ const KanbanBoard = () => {
       />
     </section>
   );
-};
+});
 
 export default KanbanBoard;

@@ -1,18 +1,18 @@
 'use client';
-import { makeStore, RootState } from '@/store/store';
-import { useRef } from 'react';
-import { Provider } from 'react-redux';
+import { enableStaticRendering } from 'mobx-react-lite';
+import { initializeStore, InitialData } from '@/storeMobX/store';
+import { StoreProvider } from '@/storeMobX/StoreContext';
+
+// Enable static rendering for SSR (false = client-side, true = server-side)
+enableStaticRendering(false);
 
 interface Props {
   children: React.ReactNode;
-  preloadedState?: Partial<RootState>;
+  initialData?: InitialData | null;
 }
-const Providers = ({ children, preloadedState }: Props) => {
-  const storeRef = useRef<ReturnType<typeof makeStore>>(null);
-  if (!storeRef.current) {
-    storeRef.current = makeStore(preloadedState);
-  }
-  return <Provider store={storeRef.current}>{children}</Provider>;
+const Providers = ({ children, initialData }: Props) => {
+  const initializedStore = initializeStore(initialData || null);
+  return <StoreProvider store={initializedStore}>{children}</StoreProvider>;
 };
 
 export default Providers;

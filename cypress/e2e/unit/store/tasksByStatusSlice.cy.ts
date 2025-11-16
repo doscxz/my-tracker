@@ -8,7 +8,7 @@ import reducer, {
   moveTask,
   distributeTasksByStatus,
   editedFiled,
-} from '../../../../src/store/slices/tasksByStatusSlice';
+} from '../../../../src/storeRedux/slices/tasksByStatusSlice';
 
 import { Priority, Task } from '../../../../src/constant/@type';
 
@@ -44,9 +44,11 @@ describe('tasksByStatusSlice reducers', () => {
         title: 'X',
         status: 'backlog',
         description: 'd',
-        type: '',
-        priority: Priority.LOW,
-        tag: '',
+        details: {
+          type: '',
+          priority: Priority.LOW,
+          tags: '',
+        },
       })
     );
     expect(state.backlog.length).to.equal(1);

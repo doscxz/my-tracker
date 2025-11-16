@@ -2,25 +2,26 @@
 import SideBar from '@/shared/SideBar';
 import TaskCard from '@/shared/TaskCard';
 import { Task } from '@/constant/@type';
-import { useGetTasksQuery } from '@/store/api/tasksApi';
-import { useAppDispatch, useAppSelector } from '@/store/store';
-import { TasksWithoutStatuses } from '@/store/selectors/tasksByStatusSelector';
-import { removeTask } from '@/store/slices/tasksByStatusSlice';
+import { useStore } from '@/storeMobX/StoreContext';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 
 interface Props {
   setSelectTask: (task: Task | null) => void;
   selectTask: Task | null;
 }
 
-const TasksBar = ({ selectTask, setSelectTask }: Props) => {
-  const dispatch = useAppDispatch();
-  const { isLoading, error } = useGetTasksQuery();
-  const tasks = useAppSelector(TasksWithoutStatuses);
+const TasksBar = observer(({ selectTask, setSelectTask }: Props) => {
+  const store = useStore();
+  const { tasksByStatus, tasksApi } = store;
+
+  const { isLoading, error } = tasksApi;
+  const tasks = tasksByStatus.tasksWithoutStatuses;
   const hasTasks = Boolean(tasks);
 
-  const deleteTask = async (task: Task, e: React.MouseEvent) => {
+  const deleteTask = async (e: React.MouseEvent, task: Task) => {
     e.stopPropagation();
-    dispatch(removeTask({ taskId: task.id, status: task.status }));
+    tasksByStatus.removeTask({ taskId: task.id, status: task.status });
     if (task.id === selectTask?.id) {
       setSelectTask(null);
     }
@@ -41,7 +42,7 @@ const TasksBar = ({ selectTask, setSelectTask }: Props) => {
               tasks!.map((task) => (
                 <TaskCard
                   selectTask={selectedTask}
-                  deleteTask={(e) => deleteTask(task, e)}
+                  deleteTask={(e) => deleteTask(e, task)}
                   task={task}
                   key={task.id}
                 />
@@ -54,6 +55,6 @@ const TasksBar = ({ selectTask, setSelectTask }: Props) => {
       </div>
     </SideBar>
   );
-};
+});
 
 export default TasksBar;

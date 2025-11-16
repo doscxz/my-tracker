@@ -3,8 +3,7 @@ import NavigationBar from '@/component/NavigationBar/NavigationBar';
 import './global.css';
 import { Mulish } from 'next/font/google';
 import Providers from '@/component/Providers/Providers';
-import { makeStore } from '@/store/store';
-import { tasksApi } from '@/store/api/tasksApi';
+import { initializeStore, InitialData } from '@/storeMobX/store';
 
 const roboto = Mulish({ subsets: ['latin'] });
 
@@ -13,15 +12,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const store = makeStore();
-  store.dispatch(tasksApi.endpoints.getTasks.initiate());
-  await Promise.all(store.dispatch(tasksApi.util.getRunningQueriesThunk()));
+  const store = initializeStore();
 
-  const preloadedState = store.getState();
+  await store.tasksApi.getTasks();
+
+  // Serialize store data to plain object (like preloadedState in Redux)
+  const initialData: InitialData = {
+    tasksByStatus: {
+      initialState: JSON.parse(JSON.stringify(store.tasksByStatus.initialState)),
+    },
+  };
+
   return (
     <html lang="ru">
       <body className={`${roboto.className} bg-stone-700`}>
-        <Providers preloadedState={preloadedState}>
+        <Providers initialData={initialData}>
           <div className="flex min-h-screen">
             <NavigationBar />
             <main className="flex-1">{children}</main>
