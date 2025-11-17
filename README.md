@@ -181,8 +181,7 @@ robots.txt — это первая остановка для робота. Он 
 
 Например:
 
-````
-
+```
 User-agent: \*
 Disallow: /admin/
 Disallow: /tmp/
@@ -309,4 +308,7 @@ robot.txt
 #### Дополнительно
 
 На сайте https://developers.google.com/search/docs/crawling-indexing/special-tags?hl=ru, есть возможно просмотра какие мета тэги не поддерживаются или поддерживаются и для чего они нужны более подробно.
-````
+
+```
+
+```
