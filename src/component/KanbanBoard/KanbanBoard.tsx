@@ -11,6 +11,7 @@ import KanbanColumn from './KanbanColumn/KanbanColumn';
 import { useModalState } from '@/shared/hooks';
 import { Task } from '@/constant/@type';
 import InformationSelectTask from './InformationSelectTask/InformationSelectTask';
+import { сheckingMemory } from '@/helper/сheckingMemory';
 
 const KanbanBoard = () => {
   const {
@@ -29,6 +30,8 @@ const KanbanBoard = () => {
   const [selectTask, setSelectTask] = useState<Task | null>(null);
   const [createTaskMutation, { isLoading: isCreatingTask }] = useCreateTaskMutation();
   const [creatingTaskStatus, setCreatingTaskStatus] = useState<string | null>(null);
+  const [draggedTask, setDraggedTask] = useState<Task | null>(null);
+  const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
 
   const addNewColumn = () => {
     openStatusModal();
@@ -39,15 +42,48 @@ const KanbanBoard = () => {
   const handleTaskCreate: onSubmitTaskModal = async (task) => {
     try {
       setCreatingTaskStatus(task.status);
-      await createTaskMutation(task).unwrap();
+      await createTaskMutation(task).unwrap;
+      console.log('1 до строчки выполнения action:', tasksByStatus);
       dispatch(createTask(task));
+      console.log('2 после строчки выполнения action:', tasksByStatus);
+
+      // COMMENT: Проверка скорости выполнения создание задач redux
+      // const start = performance.now();
+      // for (let i = 0; i < 1000; i++) {
+      //   dispatch(createTask({ ...task, title: task.title + i }));
+      // }
+      // const end = performance.now();
+      // console.log('Время выполнения 1000 задач', end - start); // 370.39999997615814
+
+      // COMMENT: Проверка занимаемой памяти
+      // @ts-ignore
+      // const initialMemory = performance.memory.usedJSHeapSize;
+      // const tasks = [];
+      // for (let i = 0; i < 1000; i++) {
+      //   const newTask = { ...task, title: task.title + i };
+      //   tasks.push(newTask);
+      //   dispatch(createTask(newTask));
+      // }
+      // // Принудительно ждем и предотвращаем оптимизацию
+      // await new Promise((resolve) => {
+      //   setTimeout(() => {
+      //     // Используем tasks чтобы предотвратить очистку
+      //     console.log(tasks.length);
+      //     resolve(null);
+      //   }, 200);
+      // });
+      // // @ts-ignore
+      // const finalMemory = performance.memory.usedJSHeapSize;
+      // const memoryUsed = (finalMemory - initialMemory) / 1024 / 1024;
+      // console.log('Было занято памяти:', memoryUsed.toFixed(2), 'MB'); //Было занято памяти: 21.82 MB
+      // console.log('Начальная память:', (initialMemory / 1024 / 1024).toFixed(2), 'MB'); // Начальная память: 89.83 MB
+      // console.log('Конечная память:', (finalMemory / 1024 / 1024).toFixed(2), 'MB'); // Конечная память: 111.65 MB
     } catch (e) {
       console.error(e);
     } finally {
       setCreatingTaskStatus(null);
     }
   };
-
   const handleSelectTask = (task: Task) => {
     if (selectTask?.id === task.id) {
       setSelectTask(null);
@@ -87,6 +123,10 @@ const KanbanBoard = () => {
                   selectTask={handleSelectTask}
                   isCreatingTask={isCreatingTask}
                   creatingTaskStatus={creatingTaskStatus}
+                  draggedTask={draggedTask}
+                  draggedFromColumn={draggedFromColumn}
+                  setDraggedTask={setDraggedTask}
+                  setDraggedFromColumn={setDraggedFromColumn}
                 />
               </div>
             ))}

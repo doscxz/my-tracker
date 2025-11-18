@@ -7,7 +7,7 @@ import TaskCard from '@/shared/TaskCard';
 import { TasksByStatus } from '@/store/selectors/tasksByStatusSelector';
 import { moveTask, removeStatus, removeTask } from '@/store/slices/tasksByStatusSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import ButtonsCreateTaskAndDeleteColumn from './ButtonsCreateTaskAndDeleteColumn/ButtonsCreateTaskAndDeleteColumn';
 import TaskCardLoading from '@/shared/TaskCardLoading';
 
@@ -20,6 +20,10 @@ interface Props {
   setTaskModal: Dispatch<SetStateAction<TaskModalState>>;
   isCreatingTask: boolean;
   creatingTaskStatus: string | null;
+  draggedTask: Task | null;
+  draggedFromColumn: string | null;
+  setDraggedTask: Dispatch<SetStateAction<Task | null>>;
+  setDraggedFromColumn: Dispatch<SetStateAction<string | null>>;
 }
 
 const KanbanColumn = ({
@@ -31,9 +35,11 @@ const KanbanColumn = ({
   selectTask,
   isCreatingTask,
   creatingTaskStatus,
+  draggedTask,
+  draggedFromColumn,
+  setDraggedTask,
+  setDraggedFromColumn,
 }: Props) => {
-  const [draggedTask, setDraggedTask] = useState<Task | null>(null);
-  const [draggedFromColumn, setDraggedFromColumn] = useState<string | null>(null);
   const tasksByStatus = useAppSelector(TasksByStatus);
   const dispatch = useAppDispatch();
   const formatedStatus = status.toLowerCase().replace(/\s+/g, '-');
