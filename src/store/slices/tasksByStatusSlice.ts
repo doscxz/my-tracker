@@ -52,6 +52,15 @@ const tasksByStatusSlice = createSlice({
         comments: [],
       });
     },
+    addTasksFromWorker: (state, { payload }: PayloadAction<Task[]>) => {
+      payload.forEach((task) => {
+        const status = task.status || 'backlog';
+        if (!state[status]) {
+          state[status] = [];
+        }
+        state[status].push(task);
+      });
+    },
     removeTask: (
       state,
       { payload: { taskId, status } }: PayloadAction<{ taskId: Task['id']; status: string }>
@@ -107,6 +116,7 @@ export const {
   addStatus,
   removeStatus,
   createTask,
+  addTasksFromWorker,
   removeTask,
   moveTask,
   distributeTasksByStatus,

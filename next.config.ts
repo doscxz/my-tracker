@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  webpack(config) {
+  webpack(config, { isServer }) {
     const fileLoaderRule = config.module.rules.find((rule: any) => rule.test?.test?.('.svg'));
 
     config.module.rules.push(
@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
     );
 
     fileLoaderRule.exclude = /\.svg$/i;
+
+    // Поддержка Web Workers
+    if (!isServer) {
+      config.output.globalObject = 'self';
+    }
 
     return config;
   },
